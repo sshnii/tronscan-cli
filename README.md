@@ -2,10 +2,12 @@
 
 基于 [TronScan API](https://docs.tronscan.org/) 的命令行工具，75+ 命令覆盖账户、交易、区块、代币、合约、安全检测、统计、深度分析等场景。
 
+支持两种使用方式：**终端命令行直接调用** 和 **在 [Claude Code](https://claude.ai/code) 中用自然语言查询**。
+
 ## 安装
 
 ```bash
-git clone https://github.com/ergouzi1133/tronscan-cli.git
+git clone https://github.com/sshnii/tronscan-cli.git
 cd tronscan-cli
 cp .env.example .env
 # 编辑 .env 填入你的 API Key
@@ -13,7 +15,7 @@ cp .env.example .env
 
 API Key 申请：https://docs.tronscan.org/zh/api/api-keys
 
-## 使用
+## 方式一：终端命令行
 
 ```bash
 # 加载
@@ -38,6 +40,28 @@ ts search sunswap               # 全局搜索
 ```bash
 echo 'source "/path/to/tronscan-cli/tronscan.sh"' >> ~/.zshrc
 ```
+
+## 方式二：在 Claude Code 中用自然语言查询
+
+将本项目作为 Claude Code 的工作目录，项目内的 `CLAUDE.md` 和 `api-reference.md` 会指导 Claude 自动识别你的查询意图，选择合适的 API 接口并解读返回结果。
+
+你只需要用中文描述需求：
+
+```
+你：查一下这个地址的余额 TXxx...
+Claude：自动执行 ts account TXxx... 并返回解读结果
+
+你：这个代币安全吗 TRxx...
+Claude：自动执行 ts security-token TRxx... 并分析风险
+
+你：分析这个地址的 USDT 转账记录
+Claude：自动执行 ts transfer-trc20 TXxx... 并生成转账分析报告
+
+你：当前 TPS 多少
+Claude：自动执行 ts tps 并返回结果
+```
+
+无需记住任何命令和 API 路径，Claude 会根据 `api-reference.md` 中的 80+ 接口自动匹配最合适的调用方式。
 
 ## 依赖
 
