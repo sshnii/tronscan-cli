@@ -87,15 +87,9 @@ Claude：自动执行 ts tps 并返回结果
 
 输入 `ts help` 查看完整命令列表。
 
-## 直接调 API
+## API 参考
 
-未封装的接口可通过兜底命令调用：
-
-```bash
-ts api "/api/xxx?param=value"
-```
-
-完整 API 列表见 [api-reference.md](api-reference.md)。
+完整 API 接口列表见 [api-reference.md](api-reference.md)。
 
 ## License
 
