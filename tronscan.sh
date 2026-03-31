@@ -53,6 +53,30 @@ _ts_resolve_contract() {
   return 1
 }
 
+_ts_resolve_trc10() {
+  local input="$1"
+  if [[ "$input" =~ ^[0-9]+$ ]]; then
+    echo "$input"
+    return 0
+  fi
+  local result token_id
+  result=$(curl -s -H "TRON-PRO-API-KEY: ${TRONSCAN_API_KEY}" \
+    "${BASE_URL}/api/search/v2?term=${input}&start=0&limit=1" 2>/dev/null) || return 1
+  token_id=$(echo "$result" | jq -r --arg q "$input" '
+    ($q | ascii_downcase) as $lq |
+    [(.token // [])[]] | [.[] | select(.token_type == "trc10")] |
+    ([.[] | select(.abbr | ascii_downcase == $lq)] | .[0].token_id) //
+    ([.[] | select(.name | ascii_downcase == $lq)] | .[0].token_id) //
+    (.[0].token_id) //
+    empty
+  ' 2>/dev/null)
+  if [[ -n "$token_id" && "$token_id" != "null" ]]; then
+    echo "$token_id"
+    return 0
+  fi
+  return 1
+}
+
 # ============ 加载 API Key ============
 
 if [[ -z "$TRONSCAN_API_KEY" ]]; then
@@ -225,12 +249,11 @@ ts_internal_tx() {
 # --- 区块 ---
 
 ts_block() {
-  _ts_get "/api/block?sort=-number&start=${_TS_OPT_START:-${1:-0}}&limit=${_TS_OPT_LIMIT:-${2:-1}}"
-}
-ts_block_num()   { _ts_get "/api/block?sort=-number&limit=1" | jq '.data[0].number'; }
-ts_block_info() {
-  _ts_require "$1" number "ts block-info <number>" || return $?
-  _ts_get "/api/block?number=$1&limit=1"
+  if [[ -n "$1" && "$1" =~ ^[0-9]+$ ]]; then
+    _ts_get "/api/block?number=$1&limit=1"
+  else
+    _ts_get "/api/block?sort=-number&start=${_TS_OPT_START:-${1:-0}}&limit=${_TS_OPT_LIMIT:-${2:-1}}"
+  fi
 }
 ts_block_stats() { _ts_get "/api/block/statistic"; }
 
@@ -238,6 +261,12 @@ ts_block_stats() { _ts_get "/api/block/statistic"; }
 
 ts_token() {
   _ts_require "$1" "contract|symbol" "ts token <contract|symbol>  (如: ts token USDT)" || return $?
+  local input_lower
+  input_lower=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+  if [[ "$input_lower" == "trx" ]]; then
+    _ts_get "/api/token?id=0&showAll=1"
+    return $?
+  fi
   local contract
   contract=$(_ts_resolve_contract "$1") || {
     _ts_err "无法解析代币: $1"
@@ -248,26 +277,34 @@ ts_token() {
   _ts_get "/api/token_trc20?contract=$contract"
 }
 ts_token_trc10() {
-  _ts_require "$1" id "ts token-trc10 <id>" || return $?
-  _ts_get "/api/token?id=$1"
+  _ts_require "$1" "id|symbol" "ts token-trc10 <id|symbol>" || return $?
+  local tid
+  tid=$(_ts_resolve_trc10 "$1") || { _ts_err "无法解析 TRC10 代币: $1"; return 2; }
+  [[ "$tid" != "$1" ]] && echo -e "${_C_DIM}→ $1 → $tid${_C_RESET}" >&2
+  _ts_get "/api/token?id=$tid"
 }
 ts_token_holders() {
-  _ts_require "$1" contract "ts token-holders <contract> [--start N] [--limit N]" || return $?
-  _ts_get "/api/token_trc20/holders?contract_address=$1&start=${_TS_OPT_START:-${2:-0}}&limit=${_TS_OPT_LIMIT:-${3:-20}}"
+  _ts_require "$1" "contract|symbol" "ts token-holders <contract|symbol> [--start N] [--limit N]" || return $?
+  local contract
+  contract=$(_ts_resolve_contract "$1") || { _ts_err "无法解析代币: $1"; return 2; }
+  [[ "$contract" != "$1" ]] && echo -e "${_C_DIM}→ $1 → $contract${_C_RESET}" >&2
+  _ts_get "/api/token_trc20/holders?contract_address=$contract&start=${_TS_OPT_START:-${2:-0}}&limit=${_TS_OPT_LIMIT:-${3:-20}}"
 }
 ts_token_holders_trc10() {
-  _ts_require "$1" token "ts token-holders-trc10 <token> [--start N] [--limit N]" || return $?
-  _ts_get "/api/tokenholders?token=$1&start=${_TS_OPT_START:-${2:-0}}&limit=${_TS_OPT_LIMIT:-${3:-20}}"
+  _ts_require "$1" "token|symbol" "ts token-holders-trc10 <token|symbol> [--start N] [--limit N]" || return $?
+  local tid
+  tid=$(_ts_resolve_trc10 "$1") || { _ts_err "无法解析 TRC10 代币: $1"; return 2; }
+  [[ "$tid" != "$1" ]] && echo -e "${_C_DIM}→ $1 → $tid${_C_RESET}" >&2
+  _ts_get "/api/tokenholders?token=$tid&start=${_TS_OPT_START:-${2:-0}}&limit=${_TS_OPT_LIMIT:-${3:-20}}"
 }
 ts_token_price() {
-  _ts_require "$1" token "ts token-price <token>" || return $?
-  _ts_get "/api/token/price?token=$1"
+  _ts_require "$1" "symbol" "ts token-price <symbol>  (如: ts token-price trx)" || return $?
+  local sym
+  sym=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+  _ts_get "/api/token/price?token=$sym"
 }
 ts_token_price_list() { _ts_get "/api/getAssetWithPriceList"; }
-ts_token_supply() {
-  _ts_require "$1" contract "ts token-supply <contract>" || return $?
-  _ts_get "/api/token_trc20/totalSupply?contract=$1"
-}
+
 ts_token_list() {
   _ts_get "/api/tokens/overview?start=${_TS_OPT_START:-${1:-0}}&limit=${_TS_OPT_LIMIT:-${2:-20}}"
 }
@@ -470,17 +507,15 @@ _ts_cmd_usage() {
     transfer-trc1155)       u="ts transfer-trc1155 <address> [--start N] [--limit N]|TRC1155 转账" ;;
     transfer-trc721)        u="ts transfer-trc721 <contract> <tokenId>|TRC721 转账" ;;
     internal-tx)            u="ts internal-tx <address> [--start N] [--limit N]|内部交易" ;;
-    block)                  u="ts block [--start N] [--limit N]|最新区块" ;;
-    block-num)              u="ts block-num|最新区块高度" ;;
-    block-info)             u="ts block-info <number>|指定区块详情" ;;
+    block)                  u="ts block [number]|最新区块（传区块号查指定区块）" ;;
     block-stats)            u="ts block-stats|区块统计" ;;
     token)                  u="ts token <contract|symbol>|TRC20 代币详情（支持符号如 USDT）" ;;
-    token-trc10)            u="ts token-trc10 <id>|TRC10 代币详情" ;;
-    token-holders)          u="ts token-holders <contract> [--start N] [--limit N]|TRC20 持有者列表" ;;
-    token-holders-trc10)    u="ts token-holders-trc10 <token> [--start N] [--limit N]|TRC10 持有者列表" ;;
-    token-price)            u="ts token-price <token>|代币价格" ;;
+    token-trc10)            u="ts token-trc10 <id|symbol>|TRC10 代币详情（支持符号）" ;;
+    token-holders)          u="ts token-holders <contract|symbol> [--start N] [--limit N]|TRC20 持有者列表（支持符号）" ;;
+    token-holders-trc10)    u="ts token-holders-trc10 <token|symbol> [--start N] [--limit N]|TRC10 持有者列表（支持符号）" ;;
+    token-price)            u="ts token-price <symbol>|代币价格（如 trx、usdt）" ;;
     token-price-list)       u="ts token-price-list|带价格的代币列表" ;;
-    token-supply)           u="ts token-supply <contract>|TRC20 流通量" ;;
+
     token-list)             u="ts token-list [--start N] [--limit N]|代币排行" ;;
     token-all)              u="ts token-all [--start N] [--limit N]|所有已索引代币" ;;
     token-distribution)     u="ts token-distribution <token>|持仓分布" ;;
@@ -620,8 +655,6 @@ ts() {
 
     # 区块
     block)                 ts_block "$@" ;;
-    block-num)             ts_block_num ;;
-    block-info)            ts_block_info "$@" ;;
     block-stats)           ts_block_stats ;;
 
     # 代币
@@ -631,7 +664,7 @@ ts() {
     token-holders-trc10)   ts_token_holders_trc10 "$@" ;;
     token-price)           ts_token_price "$@" ;;
     token-price-list)      ts_token_price_list ;;
-    token-supply)          ts_token_supply "$@" ;;
+
     token-list)            ts_token_list "$@" ;;
     token-all)             ts_token_all "$@" ;;
     token-distribution)    ts_token_distribution "$@" ;;
@@ -759,19 +792,17 @@ OPTS
     ts internal-tx <addr>           内部交易
 
   区块:
-    ts block                        最新区块
-    ts block-num                    最新区块高度
-    ts block-info <number>          指定区块详情
+    ts block [number]               最新区块（传区块号查指定区块）
     ts block-stats                  区块统计
 
   代币:
     ts token <contract|symbol>      TRC20 代币详情（支持 USDT 等符号）
-    ts token-trc10 <id>             TRC10 代币详情
-    ts token-holders <contract>     TRC20 持有者列表
-    ts token-holders-trc10 <token>  TRC10 持有者列表
-    ts token-price <token>          代币价格
+    ts token-trc10 <id|symbol>       TRC10 代币详情
+    ts token-holders <contract|symbol> TRC20 持有者列表
+    ts token-holders-trc10 <token|symbol> TRC10 持有者列表
+    ts token-price <symbol>          代币价格（如 trx、usdt）
     ts token-price-list             带价格的代币列表
-    ts token-supply <contract>      TRC20 流通量
+
     ts token-list                   代币排行
     ts token-all                    所有已索引代币
     ts token-distribution <token>   持仓分布
