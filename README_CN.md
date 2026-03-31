@@ -17,6 +17,11 @@ cp .env.example .env
 
 API Key 申请：https://docs.tronscan.org/zh/api/api-keys
 
+> **建议：** 把 source 加到 `~/.zshrc`，这样每次打开终端就能直接使用 `ts` 命令：
+> ```bash
+> echo 'source "/path/to/tronscan-cli/tronscan.sh"' >> ~/.zshrc
+> ```
+
 ## 方式一：终端命令行
 
 ```bash
@@ -35,12 +40,6 @@ ts security-account TXxx...     # 账户风险检测
 ts tps                          # 当前 TPS
 ts block-num                    # 最新区块高度
 ts search sunswap               # 全局搜索
-```
-
-永久生效：
-
-```bash
-echo 'source "/path/to/tronscan-cli/tronscan.sh"' >> ~/.zshrc
 ```
 
 ## 方式二：在 AI IDE 中用自然语言查询

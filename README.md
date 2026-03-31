@@ -17,6 +17,11 @@ cp .env.example .env
 
 Get your API Key: https://docs.tronscan.org/zh/api/api-keys
 
+> **Tip:** Add `source` to your `~/.zshrc` so `ts` commands are available every time you open a terminal:
+> ```bash
+> echo 'source "/path/to/tronscan-cli/tronscan.sh"' >> ~/.zshrc
+> ```
+
 ## Option 1: Terminal Commands
 
 ```bash
@@ -35,12 +40,6 @@ ts security-account TXxx...     # Account risk check
 ts tps                          # Current TPS
 ts block-num                    # Latest block height
 ts search sunswap               # Global search
-```
-
-To load automatically:
-
-```bash
-echo 'source "/path/to/tronscan-cli/tronscan.sh"' >> ~/.zshrc
 ```
 
 ## Option 2: Natural Language Queries in AI IDEs
