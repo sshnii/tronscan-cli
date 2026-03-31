@@ -29,6 +29,30 @@ _ts_require() {
   fi
 }
 
+_ts_resolve_contract() {
+  local input="$1"
+  if [[ "$input" =~ ^T[A-Za-z0-9]{33}$ ]]; then
+    echo "$input"
+    return 0
+  fi
+  local result contract
+  result=$(curl -s -H "TRON-PRO-API-KEY: ${TRONSCAN_API_KEY}" \
+    "${BASE_URL}/api/search/v2?term=${input}&start=0&limit=1" 2>/dev/null) || return 1
+  contract=$(echo "$result" | jq -r --arg q "$input" '
+    ($q | ascii_downcase) as $lq |
+    [(.token // [])[]] | [.[] | select(.token_type == "trc20")] |
+    ([.[] | select(.abbr | ascii_downcase == $lq)] | sort_by(if .vip then 0 else 1 end) | .[0].token_id) //
+    ([.[] | select(.name | ascii_downcase == $lq)] | sort_by(if .vip then 0 else 1 end) | .[0].token_id) //
+    (sort_by(if .vip then 0 else 1 end) | .[0].token_id) //
+    empty
+  ' 2>/dev/null)
+  if [[ -n "$contract" && "$contract" != "null" ]]; then
+    echo "$contract"
+    return 0
+  fi
+  return 1
+}
+
 # ============ 加载 API Key ============
 
 if [[ -z "$TRONSCAN_API_KEY" ]]; then
@@ -213,8 +237,15 @@ ts_block_stats() { _ts_get "/api/block/statistic"; }
 # --- 代币 ---
 
 ts_token() {
-  _ts_require "$1" contract "ts token <contract>" || return $?
-  _ts_get "/api/token_trc20?contract=$1"
+  _ts_require "$1" "contract|symbol" "ts token <contract|symbol>  (如: ts token USDT)" || return $?
+  local contract
+  contract=$(_ts_resolve_contract "$1") || {
+    _ts_err "无法解析代币: $1"
+    _ts_warn "请输入合约地址或代币符号（如 USDT、trx）"
+    return 2
+  }
+  [[ "$contract" != "$1" ]] && echo -e "${_C_DIM}→ $1 → $contract${_C_RESET}" >&2
+  _ts_get "/api/token_trc20?contract=$contract"
 }
 ts_token_trc10() {
   _ts_require "$1" id "ts token-trc10 <id>" || return $?
@@ -443,7 +474,7 @@ _ts_cmd_usage() {
     block-num)              u="ts block-num|最新区块高度" ;;
     block-info)             u="ts block-info <number>|指定区块详情" ;;
     block-stats)            u="ts block-stats|区块统计" ;;
-    token)                  u="ts token <contract>|TRC20 代币详情" ;;
+    token)                  u="ts token <contract|symbol>|TRC20 代币详情（支持符号如 USDT）" ;;
     token-trc10)            u="ts token-trc10 <id>|TRC10 代币详情" ;;
     token-holders)          u="ts token-holders <contract> [--start N] [--limit N]|TRC20 持有者列表" ;;
     token-holders-trc10)    u="ts token-holders-trc10 <token> [--start N] [--limit N]|TRC10 持有者列表" ;;
@@ -734,7 +765,7 @@ OPTS
     ts block-stats                  区块统计
 
   代币:
-    ts token <contract>             TRC20 代币详情
+    ts token <contract|symbol>      TRC20 代币详情（支持 USDT 等符号）
     ts token-trc10 <id>             TRC10 代币详情
     ts token-holders <contract>     TRC20 持有者列表
     ts token-holders-trc10 <token>  TRC10 持有者列表
@@ -822,8 +853,6 @@ OPTS
     ts stable-pool-change           池子历史变化
     ts stable-tvl                   稳定币 TVL 分布
 
-  直接调 API:
-    ts api "/api/xxx?param=value"
 
 HELP
       ;;
