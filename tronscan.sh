@@ -114,9 +114,9 @@ ts_contract_triggers()     { _ts_get "/api/contracts/trigger?start=${1:-0}&limit
 ts_contract_events()       { _ts_post "/api/contracts/smart-contract-triggers-batch" "$1"; }
 
 # --- 超级代表 & 治理 ---
-ts_witness()               { _ts_get "/api/pagewitness?witnesstype=${1:-0}"; }
-ts_witness_votes()         { _ts_get "/api/vote/witness?address=$1"; }
-ts_witness_info()          { _ts_get "/api/witness/general-info"; }
+ts_sr()                    { _ts_get "/api/pagewitness?witnesstype=${1:-0}"; }
+ts_sr_votes()              { _ts_get "/api/vote/witness?address=$1"; }
+ts_sr_info()               { _ts_get "/api/witness/general-info"; }
 ts_params()                { _ts_get "/api/chainparameters"; }
 ts_proposal()              { _ts_get "/api/proposal?id=$1"; }
 
@@ -245,9 +245,9 @@ ts() {
     contract-events)       ts_contract_events "$@" ;;
 
     # SR
-    witness)               ts_witness "$@" ;;
-    witness-votes)         ts_witness_votes "$@" ;;
-    witness-info)          ts_witness_info ;;
+    sr)                    ts_sr "$@" ;;
+    sr-votes)              ts_sr_votes "$@" ;;
+    sr-info)               ts_sr_info ;;
     params)                ts_params ;;
     proposal)              ts_proposal "$@" ;;
 
@@ -374,9 +374,9 @@ TronScan CLI (ts) - 命令列表
     ts contract-events '<json>'     合约事件(POST)
 
   超级代表:
-    ts witness [type]               SR 列表 (0=SR,1=partner,3=candidate)
-    ts witness-votes <addr>         SR 投票详情
-    ts witness-info                 SR 总览统计
+    ts sr [type]                    SR 列表 (0=SR,1=partner,3=candidate)
+    ts sr-votes <addr>              SR 投票详情
+    ts sr-info                      SR 总览统计
     ts params                       链参数
     ts proposal <id>                提案详情
 

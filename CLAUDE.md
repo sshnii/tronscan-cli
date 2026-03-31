@@ -33,7 +33,7 @@
 | 关联分析/资金追踪 | `ts deep-related` / `ts deep-flow` |
 | 大额交易 | `ts deep-big-tx <addr>` |
 | 稳定币 | `ts stable-*` 系列 |
-| SR/超级代表 | `ts witness` |
+| SR/超级代表 | `ts sr` |
 | 链参数 | `ts params` |
 
 ### 执行模板

@@ -37,7 +37,7 @@ source "<project_root>/tronscan.sh" && ts <command> [args...]
 | 关联分析/资金追踪 | `ts deep-related <addr>` / `ts deep-flow <addr>` |
 | 大额交易 | `ts deep-big-tx <addr>` |
 | 稳定币 | `ts stable-*` 系列 |
-| SR/超级代表 | `ts witness` |
+| SR/超级代表 | `ts sr` |
 | 链参数 | `ts params` |
 
 ### 输出要求
