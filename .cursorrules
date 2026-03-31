@@ -22,7 +22,7 @@ source "<project_root>/tronscan.sh" && ts <command> [args...]
 | 查授权/approve | `ts account-approve <addr>` |
 | 查交易/tx hash | `ts tx <hash>` |
 | 查转账记录 | `ts transfer <addr>` 或 `ts transfer-trc20 <addr>` |
-| 查区块/最新区块 | `ts block` 或 `ts block-num` |
+| 查区块/最新区块 | `ts block` |
 | 查代币信息 | `ts token <contract>` |
 | 查代币持有者 | `ts token-holders <contract>` |
 | 查代币价格 | `ts token-price <token>` |

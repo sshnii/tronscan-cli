@@ -308,9 +308,7 @@ ts_token_price_list() { _ts_get "/api/getAssetWithPriceList"; }
 ts_token_list() {
   _ts_get "/api/tokens/overview?start=${_TS_OPT_START:-${1:-0}}&limit=${_TS_OPT_LIMIT:-${2:-20}}"
 }
-ts_token_all() {
-  _ts_get "/api/token/all?start=${_TS_OPT_START:-${1:-0}}&limit=${_TS_OPT_LIMIT:-${2:-20}}"
-}
+
 ts_token_distribution() {
   _ts_require "$1" token "ts token-distribution <token>" || return $?
   _ts_get "/api/tokens/position-distribution?token=$1"
@@ -517,7 +515,7 @@ _ts_cmd_usage() {
     token-price-list)       u="ts token-price-list|带价格的代币列表" ;;
 
     token-list)             u="ts token-list [--start N] [--limit N]|代币排行" ;;
-    token-all)              u="ts token-all [--start N] [--limit N]|所有已索引代币" ;;
+
     token-distribution)     u="ts token-distribution <token>|持仓分布" ;;
     token-trc721)           u="ts token-trc721 <contract>|TRC721 NFT 详情" ;;
     token-trc1155-inv)      u="ts token-trc1155-inv <contract>|TRC1155 库存" ;;
@@ -666,7 +664,7 @@ ts() {
     token-price-list)      ts_token_price_list ;;
 
     token-list)            ts_token_list "$@" ;;
-    token-all)             ts_token_all "$@" ;;
+
     token-distribution)    ts_token_distribution "$@" ;;
     token-trc721)          ts_token_trc721 "$@" ;;
     token-trc1155-inv)     ts_token_trc1155_inv "$@" ;;
@@ -804,7 +802,7 @@ OPTS
     ts token-price-list             带价格的代币列表
 
     ts token-list                   代币排行
-    ts token-all                    所有已索引代币
+
     ts token-distribution <token>   持仓分布
     ts token-trc721 <contract>      TRC721 NFT 详情
     ts token-trc1155-inv <contract> TRC1155 库存

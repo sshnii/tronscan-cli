@@ -35,10 +35,10 @@ ts help
 ts account TXxx...              # 账户详情
 ts tx 0xabc...                  # 交易详情
 ts transfer-trc20 TXxx...       # TRC20 转账记录
-ts token TR7NHqje...            # 代币信息
+ts token usdt            # 代币信息
 ts security-account TXxx...     # 账户风险检测
 ts tps                          # 当前 TPS
-ts block-num                    # 最新区块高度
+ts block                        # 最新区块
 ts search sunswap               # 全局搜索
 ```
 

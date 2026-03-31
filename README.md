@@ -35,10 +35,10 @@ ts help
 ts account TXxx...              # Account details
 ts tx 0xabc...                  # Transaction details
 ts transfer-trc20 TXxx...       # TRC20 transfers
-ts token TR7NHqje...            # Token info
+ts token usdt                   # Token info
 ts security-account TXxx...     # Account risk check
 ts tps                          # Current TPS
-ts block-num                    # Latest block height
+ts block                        # Latest block
 ts search sunswap               # Global search
 ```
 
