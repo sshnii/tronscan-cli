@@ -32,14 +32,14 @@ source tronscan.sh
 ts help
 
 # 示例
+ts token usdt                   # 代币信息
+ts search usdt                  # 全局搜索
+ts block                        # 最新区块
+ts tps                          # 当前 TPS
 ts account TXxx...              # 账户详情
 ts tx 0xabc...                  # 交易详情
 ts transfer-trc20 TXxx...       # TRC20 转账记录
-ts token usdt            # 代币信息
 ts security-account TXxx...     # 账户风险检测
-ts tps                          # 当前 TPS
-ts block                        # 最新区块
-ts search sunswap               # 全局搜索
 ```
 
 ## 方式二：在 AI IDE 中用自然语言查询

@@ -32,14 +32,14 @@ source tronscan.sh
 ts help
 
 # Examples
+ts token usdt                   # Token info
+ts search usdt                  # Global search
+ts block                        # Latest block
+ts tps                          # Current TPS
 ts account TXxx...              # Account details
 ts tx 0xabc...                  # Transaction details
 ts transfer-trc20 TXxx...       # TRC20 transfers
-ts token usdt                   # Token info
 ts security-account TXxx...     # Account risk check
-ts tps                          # Current TPS
-ts block                        # Latest block
-ts search sunswap               # Global search
 ```
 
 ## Option 2: Natural Language Queries in AI IDEs
