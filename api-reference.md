@@ -47,7 +47,6 @@ Base URL: `https://apilist.tronscanapi.com`
 | 接口 | 用途 | 关键参数 |
 |------|------|----------|
 | `GET /api/block` | 区块列表/详情 | `start`, `limit`, `producer`, `sort=-number`, `start_timestamp`, `end_timestamp` |
-| `GET /api/block/statistic` | 区块统计（24h 出块、销毁等） | - |
 
 ---
 
@@ -55,19 +54,17 @@ Base URL: `https://apilist.tronscanapi.com`
 
 | 接口 | 用途 | 关键参数 |
 |------|------|----------|
-| `GET /api/tokens/overview` | 代币列表总览 | `start`, `limit`, `filter` |
+| `GET /api/tokens/overview` | 已索引代币列表/排行（CLI: `ts token-list`） | `start`, `limit`, `filter` |
 | `GET /api/token_trc20` | TRC20/721/1155 代币详情 | `contract` |
 | `GET /api/token` | TRC10 代币详情 | `id` |
 | `GET /api/token_trc20/holders` | TRC20 持有者列表 | `contract_address`, `start`, `limit` |
 | `GET /api/tokenholders` | TRC10 持有者列表 | `token`, `start`, `limit` |
 | `GET /api/tokens/position-distribution` | 代币持仓分布 | `token` |
 | `GET /api/token/price` | 代币价格 | `token` |
-| `GET /api/getAssetWithPriceList` | 带价格的代币列表 | - |
 | `GET /api/trc721/transfers` | TRC721 转账记录 | `contract`, `tokenId` |
 | `GET /api/token_trc20/totalSupply` | TRC20 流通量 | `contract` |
 | `GET /api/trc721/token` | TRC721 NFT 详情 | `contract` |
 | `GET /api/trc1155/inventory` | TRC1155 库存 | `contract` |
-| `GET /api/token/all` | 所有已索引代币 | `start`, `limit` |
 
 ---
 
@@ -95,7 +92,6 @@ Base URL: `https://apilist.tronscanapi.com`
 | `GET /api/pagewitness` | SR 列表 | `witnesstype`(0=SR,1=partner,3=candidate) |
 | `GET /api/account/votes` | 账户投票记录 | `address` |
 | `GET /api/vote/witness` | SR 当前投票详情 | `address` |
-| `GET /api/witness/general-info` | SR 总览统计 | - |
 | `GET /api/chainparameters` | 链参数列表 | - |
 | `GET /api/proposal` | 提案信息 | `id`, `start`, `limit`, `address` |
 
@@ -114,11 +110,11 @@ Base URL: `https://apilist.tronscanapi.com`
 
 ---
 
-## 首页 & 搜索
+## 网络概览 & 搜索
 
 | 接口 | 用途 | 关键参数 |
 |------|------|----------|
-| `GET /api/system/homepage-bundle` | 首页综合数据 | - |
+| `GET /api/system/homepage-bundle` | TRON 网络概览（CLI: `ts overview`） | - |
 | `GET /api/search/v2` | 全局搜索 | `term`, `type`(token/address/contract/transaction/block), `start`, `limit` |
 | `GET /api/search/bar` | 热门搜索代币 | - |
 | `GET /api/search/hot` | 热搜排行 | - |

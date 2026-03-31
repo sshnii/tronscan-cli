@@ -255,8 +255,6 @@ ts_block() {
     _ts_get "/api/block?sort=-number&start=${_TS_OPT_START:-${1:-0}}&limit=${_TS_OPT_LIMIT:-${2:-1}}"
   fi
 }
-ts_block_stats() { _ts_get "/api/block/statistic"; }
-
 # --- 代币 ---
 
 ts_token() {
@@ -303,8 +301,6 @@ ts_token_price() {
   sym=$(echo "$1" | tr '[:upper:]' '[:lower:]')
   _ts_get "/api/token/price?token=$sym"
 }
-ts_token_price_list() { _ts_get "/api/getAssetWithPriceList"; }
-
 ts_token_list() {
   _ts_get "/api/tokens/overview?start=${_TS_OPT_START:-${1:-0}}&limit=${_TS_OPT_LIMIT:-${2:-20}}"
 }
@@ -313,19 +309,6 @@ ts_token_distribution() {
   _ts_require "$1" token "ts token-distribution <token>" || return $?
   _ts_get "/api/tokens/position-distribution?token=$1"
 }
-ts_token_trc721() {
-  _ts_require "$1" contract "ts token-trc721 <contract>" || return $?
-  _ts_get "/api/trc721/token?contract=$1"
-}
-ts_token_trc1155_inv() {
-  _ts_require "$1" contract "ts token-trc1155-inv <contract>" || return $?
-  _ts_get "/api/trc1155/inventory?contract=$1"
-}
-ts_token_trc1155_token() {
-  _ts_require "$1" contract "ts token-trc1155-token <contract>" || return $?
-  _ts_get "/api/trc1155/token/inventory?contract=$1"
-}
-
 # --- 合约 ---
 
 ts_contract() {
@@ -378,7 +361,6 @@ ts_sr_votes() {
   _ts_require "$1" address "ts sr-votes <address>" || return $?
   _ts_get "/api/vote/witness?address=$1"
 }
-ts_sr_info()  { _ts_get "/api/witness/general-info"; }
 ts_params()   { _ts_get "/api/chainparameters"; }
 ts_proposal() {
   _ts_require "$1" id "ts proposal <id>" || return $?
@@ -506,20 +488,15 @@ _ts_cmd_usage() {
     transfer-trc721)        u="ts transfer-trc721 <contract> <tokenId>|TRC721 转账" ;;
     internal-tx)            u="ts internal-tx <address> [--start N] [--limit N]|内部交易" ;;
     block)                  u="ts block [number]|最新区块（传区块号查指定区块）" ;;
-    block-stats)            u="ts block-stats|区块统计" ;;
     token)                  u="ts token <contract|symbol>|TRC20 代币详情（支持符号如 USDT）" ;;
     token-trc10)            u="ts token-trc10 <id|symbol>|TRC10 代币详情（支持符号）" ;;
     token-holders)          u="ts token-holders <contract|symbol> [--start N] [--limit N]|TRC20 持有者列表（支持符号）" ;;
     token-holders-trc10)    u="ts token-holders-trc10 <token|symbol> [--start N] [--limit N]|TRC10 持有者列表（支持符号）" ;;
     token-price)            u="ts token-price <symbol>|代币价格（如 trx、usdt）" ;;
-    token-price-list)       u="ts token-price-list|带价格的代币列表" ;;
-
-    token-list)             u="ts token-list [--start N] [--limit N]|代币排行" ;;
+    token-list)             u="ts token-list [--start N] [--limit N]|已索引代币列表/排行" ;;
 
     token-distribution)     u="ts token-distribution <token>|持仓分布" ;;
-    token-trc721)           u="ts token-trc721 <contract>|TRC721 NFT 详情" ;;
-    token-trc1155-inv)      u="ts token-trc1155-inv <contract>|TRC1155 库存" ;;
-    token-trc1155-token)    u="ts token-trc1155-token <contract>|TRC1155 代币持仓" ;;
+
     contract)               u="ts contract <address>|合约详情" ;;
     contract-list)          u="ts contract-list [--start N] [--limit N] [--sort FIELD]|合约列表" ;;
     contract-callers)       u="ts contract-callers <address>|调用者排行" ;;
@@ -532,7 +509,6 @@ _ts_cmd_usage() {
     contract-events)        u="ts contract-events '<json>'|合约事件（POST）" ;;
     sr)                     u="ts sr [type: 0=SR, 1=partner, 3=candidate]|SR 列表" ;;
     sr-votes)               u="ts sr-votes <address>|SR 投票详情" ;;
-    sr-info)                u="ts sr-info|SR 总览统计" ;;
     params)                 u="ts params|链参数列表" ;;
     proposal)               u="ts proposal <id>|提案详情" ;;
     security-account)       u="ts security-account <address>|账户风险检测" ;;
@@ -543,7 +519,7 @@ _ts_cmd_usage() {
     security-sign)          u="ts security-sign <address>|多签配置检查" ;;
     search)                 u="ts search <keyword> [--limit N]|全局搜索" ;;
     tps)                    u="ts tps|当前 TPS" ;;
-    overview)               u="ts overview|首页概览" ;;
+    overview)               u="ts overview|TRON 网络概览" ;;
     hot-token)              u="ts hot-token|热搜代币排行" ;;
     nodes)                  u="ts nodes|全网节点信息" ;;
     trx-supply)             u="ts trx-supply|TRX 供应/销毁" ;;
@@ -653,22 +629,16 @@ ts() {
 
     # 区块
     block)                 ts_block "$@" ;;
-    block-stats)           ts_block_stats ;;
-
     # 代币
     token)                 ts_token "$@" ;;
     token-trc10)           ts_token_trc10 "$@" ;;
     token-holders)         ts_token_holders "$@" ;;
     token-holders-trc10)   ts_token_holders_trc10 "$@" ;;
     token-price)           ts_token_price "$@" ;;
-    token-price-list)      ts_token_price_list ;;
-
     token-list)            ts_token_list "$@" ;;
 
     token-distribution)    ts_token_distribution "$@" ;;
-    token-trc721)          ts_token_trc721 "$@" ;;
-    token-trc1155-inv)     ts_token_trc1155_inv "$@" ;;
-    token-trc1155-token)   ts_token_trc1155_token "$@" ;;
+
 
     # 合约
     contract)              ts_contract "$@" ;;
@@ -685,7 +655,6 @@ ts() {
     # SR
     sr)                    ts_sr "$@" ;;
     sr-votes)              ts_sr_votes "$@" ;;
-    sr-info)               ts_sr_info ;;
     params)                ts_params ;;
     proposal)              ts_proposal "$@" ;;
 
@@ -764,6 +733,25 @@ ts() {
 
 OPTS
       cat <<'HELP'
+  代币:
+    ts token <contract|symbol>      TRC20 代币详情（支持 USDT 等符号）
+    ts token-trc10 <id|symbol>       TRC10 代币详情
+    ts token-holders <contract|symbol> TRC20 持有者列表
+    ts token-holders-trc10 <token|symbol> TRC10 持有者列表
+    ts token-price <symbol>          代币价格（如 trx、usdt）
+    ts token-list                   已索引代币列表/排行
+    ts token-distribution <token>   持仓分布
+
+  搜索:
+    ts search <keyword>             全局搜索
+    ts tps                          当前 TPS
+    ts overview                     TRON 网络概览
+    ts hot-token                    热搜代币排行
+    ts nodes                        全网节点信息
+
+  区块:
+    ts block [number]               最新区块（传区块号查指定区块）
+
   账户:
     ts account <addr>               账户详情
     ts account-list                 账户排行榜
@@ -777,6 +765,12 @@ OPTS
     ts account-asset <addr>         持仓总览(含估值)
     ts account-projects <addr>      参与项目
 
+  超级代表:
+    ts sr [type]                    SR 列表 (0=SR,1=partner,3=candidate)
+    ts sr-votes <addr>              SR 投票详情
+    ts params                       链参数
+    ts proposal <id>                提案详情
+
   交易:
     ts tx <hash>                    交易详情
     ts tx-list                      交易列表
@@ -788,59 +782,6 @@ OPTS
     ts transfer-trc1155 <addr>      TRC1155 转账
     ts transfer-trc721 <contract> <tokenId> TRC721 转账
     ts internal-tx <addr>           内部交易
-
-  区块:
-    ts block [number]               最新区块（传区块号查指定区块）
-    ts block-stats                  区块统计
-
-  代币:
-    ts token <contract|symbol>      TRC20 代币详情（支持 USDT 等符号）
-    ts token-trc10 <id|symbol>       TRC10 代币详情
-    ts token-holders <contract|symbol> TRC20 持有者列表
-    ts token-holders-trc10 <token|symbol> TRC10 持有者列表
-    ts token-price <symbol>          代币价格（如 trx、usdt）
-    ts token-price-list             带价格的代币列表
-
-    ts token-list                   代币排行
-
-    ts token-distribution <token>   持仓分布
-    ts token-trc721 <contract>      TRC721 NFT 详情
-    ts token-trc1155-inv <contract> TRC1155 库存
-    ts token-trc1155-token <contract> TRC1155 代币持仓
-
-  合约:
-    ts contract <addr>              合约详情
-    ts contract-list                合约列表
-    ts contract-callers <addr>      调用者排行
-    ts contract-energy <addr>       能量消耗统计
-    ts contract-daily-callers <addr> <start_ts> <end_ts> 每日独立调用者
-    ts contract-daily-calls <addr> <start_ts> <end_ts>   每日调用次数
-    ts contract-analysis <addr> [type] 合约日度分析(type:0-5)
-    ts contract-all-callers <addr> [day] 所有调用者列表
-    ts contract-triggers            合约触发交易
-    ts contract-events '<json>'     合约事件(POST)
-
-  超级代表:
-    ts sr [type]                    SR 列表 (0=SR,1=partner,3=candidate)
-    ts sr-votes <addr>              SR 投票详情
-    ts sr-info                      SR 总览统计
-    ts params                       链参数
-    ts proposal <id>                提案详情
-
-  安全:
-    ts security-account <addr>      账户风险检测
-    ts security-token <addr>        代币安全检测
-    ts security-url <url>           URL 钓鱼检测
-    ts security-tx <hash>           交易风险检测
-    ts security-auth <addr>         授权风险检查
-    ts security-sign <addr>         多签配置检查
-
-  搜索:
-    ts search <keyword>             全局搜索
-    ts tps                          当前 TPS
-    ts overview                     首页概览
-    ts hot-token                    热搜代币排行
-    ts nodes                        全网节点信息
 
   统计:
     ts trx-supply                   TRX 供应/销毁
@@ -862,6 +803,26 @@ OPTS
     ts token-transfer-analysis      代币转账分析
     ts block-size                   平均区块大小
     ts blockchain-size              区块链总大小
+
+  合约:
+    ts contract <addr>              合约详情
+    ts contract-list                合约列表
+    ts contract-callers <addr>      调用者排行
+    ts contract-energy <addr>       能量消耗统计
+    ts contract-daily-callers <addr> <start_ts> <end_ts> 每日独立调用者
+    ts contract-daily-calls <addr> <start_ts> <end_ts>   每日调用次数
+    ts contract-analysis <addr> [type] 合约日度分析(type:0-5)
+    ts contract-all-callers <addr> [day] 所有调用者列表
+    ts contract-triggers            合约触发交易
+    ts contract-events '<json>'     合约事件(POST)
+
+  安全:
+    ts security-account <addr>      账户风险检测
+    ts security-token <addr>        代币安全检测
+    ts security-url <url>           URL 钓鱼检测
+    ts security-tx <hash>           交易风险检测
+    ts security-auth <addr>         授权风险检查
+    ts security-sign <addr>         多签配置检查
 
   深度分析:
     ts deep-related <addr>          关联账户

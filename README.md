@@ -2,7 +2,7 @@
 
 [中文文档](README_CN.md)
 
-A CLI tool built on [TronScan API](https://docs.tronscan.org/), providing 75+ commands covering accounts, transactions, blocks, tokens, contracts, security checks, statistics, deep analysis, and more.
+A CLI tool built on [TronScan API](https://docs.tronscan.org/), providing 80+ subcommands covering tokens, search, blocks, accounts, governance, transactions, statistics, contracts, security, deep analysis, stablecoins, and more.
 
 Two ways to use: **terminal commands** and **natural language queries in AI IDEs** ([Claude Code](https://claude.ai/code), [Cursor](https://cursor.com), VS Code Copilot, etc.).
 
@@ -82,17 +82,19 @@ No need to memorize commands or API paths — the AI matches the best endpoint f
 
 | Category | Count | Description |
 |----------|-------|-------------|
+| Token | 7 | Token details, holders, price, list, distribution |
+| Search | 5 | Global search, TPS, TRON network overview, trending, nodes |
+| Block | 1 | Latest or specific block |
 | Account | 11 | Balance, holdings, resources, approvals, votes, analysis |
+| Super Representative | 4 | SR list, votes, chain parameters, proposals |
 | Transaction | 10 | Transaction details, transfers (TRX/TRC20/TRC721/TRC1155) |
-| Block | 4 | Latest block, block details, block stats |
-| Token | 13 | Token details, holders, price, supply, NFT |
-| Contract | 10 | Contract details, callers, energy consumption, daily analysis |
-| Super Representative | 5 | SR list, votes, chain parameters, proposals |
-| Security | 6 | Account/token/URL/transaction risk detection, authorization check |
-| Search | 5 | Global search, TPS, overview, trending, nodes |
 | Statistics | 19 | TRX supply, transaction trends, active accounts, energy, DeFi TVL |
+| Contract | 10 | Contract details, callers, energy consumption, daily analysis |
+| Security | 6 | Account/token/URL/transaction risk detection, authorization check |
 | Deep Analysis | 4 | Related accounts, fund flow, large transactions |
 | Stablecoin | 11 | Holder distribution, top holders, mint/burn, liquidity pools |
+
+Order matches `ts help` (plus `api` / `help` meta-commands not listed above).
 
 Run `ts help` for the full command list.
 
