@@ -37,7 +37,7 @@ ts search usdt                  # Global search
 ts block                        # Latest block
 ts tps                          # Current TPS
 ts account TXxx...              # Account details
-ts tx 0xabc...                  # Transaction details
+ts tx af949...                  # Transaction hash (64 hex, no 0x)
 ts transfer-trc20 TXxx...       # TRC20 transfers
 ts security-account TXxx...     # Account risk check
 ```
