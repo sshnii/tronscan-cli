@@ -2,11 +2,11 @@
 
 ## 这是什么
 
-基于 TronScan API 的命令行工具。支持 50+ 子命令，覆盖账户、交易、区块、代币、安全、统计等场景。
+基于 TronScan API 的命令行工具（TypeScript）。支持 80+ 子命令，覆盖账户、交易、区块、代币、安全、统计等场景。
 
 ## 自动识别规则
 
-当用户消息涉及以下内容时，**自动 source tronscan.sh 并执行对应命令**，无需用户明确要求：
+当用户消息涉及以下内容时，**自动执行对应命令**，无需用户明确要求：
 
 ### 触发关键词 → 命令映射
 
@@ -27,7 +27,7 @@
 | 钓鱼/诈骗 URL | `ts security-url <url>` |
 | 搜索 | `ts search <keyword>` |
 | TPS | `ts tps` |
-| TRX 供应量/销毁 | `ts supply` |
+| TRX 供应量/销毁 | `ts trx-supply` |
 | 活跃账户 | `ts active-accounts` |
 | DeFi TVL | `ts defi-tvl` |
 | 关联分析/资金追踪 | `ts deep-related` / `ts deep-flow` |
@@ -39,7 +39,7 @@
 ### 执行模板
 
 ```bash
-source "/Users/songshaohua/Desktop/tronscan cli/tronscan.sh" && ts <command> [args...]
+cd "/Users/songshaohua/Desktop/tronscan cli" && node dist/index.js <command> [args...]
 ```
 
 ### 输出要求
@@ -52,10 +52,7 @@ source "/Users/songshaohua/Desktop/tronscan cli/tronscan.sh" && ts <command> [ar
 ## 用户也可以直接敲命令
 
 ```bash
-# 先 source（或加到 ~/.zshrc）
-source "/Users/songshaohua/Desktop/tronscan cli/tronscan.sh"
-
-# 然后直接用
+# 全局安装后直接用
 ts help                          # 查看所有命令
 ts account TXxx...               # 查账户
 ts security-token TRxx...        # 代币安全检测
@@ -65,6 +62,6 @@ ts api "/api/xxx?param=value"    # 直接调 API（兜底）
 ## 注意事项
 
 - API Key 在 `.env` 文件中，**禁止提交到版本控制**
-- 分页参数：第2个参数是 start，第3个是 limit，默认 0 和 20
+- 分页参数支持 `--start N` `--limit N`，默认 0 和 20
 - 完整 API 文档见 `api-reference.md`
 - `ts api` 兜底命令可直接调用任何未封装的接口

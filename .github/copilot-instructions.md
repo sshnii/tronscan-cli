@@ -1,6 +1,6 @@
 # TronScan CLI
 
-基于 TronScan API 的命令行工具，80+ 子命令覆盖账户、交易、区块、代币、安全、统计等场景。
+基于 TronScan API 的命令行工具（TypeScript），80+ 子命令覆盖账户、交易、区块、代币、安全、统计等场景。
 
 ## 自动识别规则
 
@@ -9,7 +9,7 @@
 ### 执行方式
 
 ```bash
-source "<project_root>/tronscan.sh" && ts <command> [args...]
+cd "<project_root>" && node dist/index.js <command> [args...]
 ```
 
 ### 触发关键词 → 命令映射
@@ -60,4 +60,4 @@ ts help
 ### 注意事项
 
 - API Key 在 `.env` 文件中，禁止提交到版本控制
-- 分页参数：第2个参数是 start，第3个是 limit，默认 0 和 20
+- 分页参数支持 `--start N` `--limit N`，默认 0 和 20

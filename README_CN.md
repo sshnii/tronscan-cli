@@ -11,29 +11,29 @@
 ```bash
 git clone https://github.com/sshnii/tronscan-cli.git
 cd tronscan-cli
+npm install
+npm run build
 cp .env.example .env
 # 编辑 .env 填入你的 API Key
 ```
 
 API Key 申请：https://docs.tronscan.org/zh/api/api-keys
 
-> **建议：** 把 source 加到 `~/.zshrc`，这样每次打开终端就能直接使用 `ts` 命令：
+> **建议：** 运行 `npm link` 注册全局命令，之后在任意目录都能直接使用 `ts` 命令：
 > ```bash
-> echo 'source "/path/to/tronscan-cli/tronscan.sh"' >> ~/.zshrc
+> npm link
+> ts help
 > ```
 
 ## 方式一：终端命令行
 
 ```bash
-# 加载
-source tronscan.sh
-
 # 查看所有命令
 ts help
 
 # 示例
 ts token usdt                   # 代币信息
-ts search usdt                  # 全局搜索
+ts search usdt                  # 搜索
 ts block                        # 最新区块
 ts tps                          # 当前 TPS
 ts account TXxx...              # 账户详情
@@ -77,16 +77,14 @@ AI：自动执行 ts tps 并返回结果
 
 ## 依赖
 
-- bash
-- curl
-- [jq](https://jqlang.github.io/jq/download/)
+- [Node.js](https://nodejs.org/) >= 18
 
 ## 命令分类
 
 | 分类 | 命令数 | 说明 |
 |------|--------|------|
 | 代币 | 7 | 代币详情、持有者、价格、列表、持仓分布 |
-| 搜索 | 5 | 全局搜索、TPS、TRON 网络概览、热搜、节点 |
+| 搜索 | 5 | 搜索、TPS、TRON 网络概览、热搜、节点 |
 | 区块 | 1 | 最新或指定区块 |
 | 账户 | 11 | 余额、持仓、资源、授权、投票、分析 |
 | 超级代表 | 4 | SR 列表、投票、链参数、提案 |

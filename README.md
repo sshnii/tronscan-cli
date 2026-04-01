@@ -11,23 +11,23 @@ Two ways to use: **terminal commands** and **natural language queries in AI IDEs
 ```bash
 git clone https://github.com/sshnii/tronscan-cli.git
 cd tronscan-cli
+npm install
+npm run build
 cp .env.example .env
 # Edit .env and fill in your API Key
 ```
 
 Get your API Key: https://docs.tronscan.org/zh/api/api-keys
 
-> **Tip:** Add `source` to your `~/.zshrc` so `ts` commands are available every time you open a terminal:
+> **Tip:** Run `npm link` to register the `ts` command globally, so you can use it from any directory:
 > ```bash
-> echo 'source "/path/to/tronscan-cli/tronscan.sh"' >> ~/.zshrc
+> npm link
+> ts help
 > ```
 
 ## Option 1: Terminal Commands
 
 ```bash
-# Load
-source tronscan.sh
-
 # View all commands
 ts help
 
@@ -77,9 +77,7 @@ No need to memorize commands or API paths — the AI matches the best endpoint f
 
 ## Dependencies
 
-- bash
-- curl
-- [jq](https://jqlang.github.io/jq/download/)
+- [Node.js](https://nodejs.org/) >= 18
 
 ## Command Categories
 
