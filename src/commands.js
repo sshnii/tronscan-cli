@@ -1,23 +1,8 @@
-import { get, post, resolveContract, resolveTrc10, err, warn, c } from './api.js';
-
-// ============ Types ============
-
-export interface Options {
-  start: string;
-  limit: string;
-  sort: string;
-  raw: boolean;
-}
-
-interface CommandDef {
-  usage: string;
-  desc: string;
-  run: (args: string[], opts: Options) => Promise<any>;
-}
+import { get, resolveContract, resolveTrc10, err, warn, c } from './api.js';
 
 // ============ Helpers ============
 
-function require(args: string[], index: number, name: string, usage: string): string {
+function require(args, index, name, usage) {
   const val = args[index];
   if (!val) {
     err(`缺少必需参数: ${name}`);
@@ -27,7 +12,7 @@ function require(args: string[], index: number, name: string, usage: string): st
   return val;
 }
 
-async function resolveAndLog(input: string, resolver: (s: string) => Promise<string>): Promise<string> {
+async function resolveAndLog(input, resolver) {
   const result = await resolver(input);
   if (result !== input) console.error(c.dim(`→ ${input} → ${result}`));
   return result;
@@ -35,7 +20,7 @@ async function resolveAndLog(input: string, resolver: (s: string) => Promise<str
 
 // ============ Command Definitions ============
 
-export const commands: Record<string, CommandDef> = {
+export const commands = {
 
   // --- 账户 ---
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { loadConfig, output, err, warn, VERSION } from './api.js';
-import { commands, type Options } from './commands.js';
+import { commands } from './commands.js';
 import { printHelp, printCommandHelp } from './help.js';
 
 // ============ Parse arguments ============
@@ -25,9 +25,9 @@ const cmd = rawArgs[0];
 const rest = rawArgs.slice(1);
 
 // Parse options and positional args
-const opts: Options = { start: '0', limit: '20', sort: '', raw: false };
+const opts = { start: '0', limit: '20', sort: '', raw: false };
 let showHelp = false;
-const positional: string[] = [];
+const positional = [];
 
 let i = 0;
 while (i < rest.length) {
@@ -65,7 +65,7 @@ loadConfig();
 try {
   const result = await command.run(positional, opts);
   output(result, opts.raw);
-} catch (e: any) {
+} catch (e) {
   err(e.message);
   process.exit(1);
 }

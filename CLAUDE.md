@@ -2,7 +2,7 @@
 
 ## 这是什么
 
-基于 TronScan API 的命令行工具（TypeScript）。支持 80+ 子命令，覆盖账户、交易、区块、代币、安全、统计等场景。
+基于 TronScan API 的命令行工具（Node.js / JavaScript）。支持 80+ 子命令，覆盖账户、交易、区块、代币、安全、统计等场景。
 
 ## 自动识别规则
 
@@ -38,9 +38,13 @@
 
 ### 执行模板
 
+先在本机全局安装（在克隆目录执行 `npm link` 或 `npm install -g .`），再：
+
 ```bash
-cd "<project_root>" && node dist/index.js <command> [args...]
+ts <command> [args...]
 ```
+
+`.env` 放在克隆的项目根目录（与 `package.json` 同级）；全局 `ts` 仍从该目录读取 API Key。
 
 ### 输出要求
 

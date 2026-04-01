@@ -4,45 +4,45 @@
 
 基于 [TronScan API](https://docs.tronscan.org/) 的命令行工具，80+ 子命令覆盖代币、搜索、区块、账户、治理、交易、统计、合约、安全、深度分析、稳定币等场景。
 
-支持两种使用方式：**终端命令行直接调用** 和 **在 AI IDE 中用自然语言查询**（支持 [Claude Code](https://claude.ai/code)、[Cursor](https://cursor.com)、VS Code Copilot 等）。
+支持两种使用方式：**终端全局命令 `ts`** 和 **在 AI IDE 中用自然语言查询**（支持 [Claude Code](https://claude.ai/code)、[Cursor](https://cursor.com)、VS Code Copilot 等）。
 
-## 安装
+## 安装（全局命令 `ts`）
 
 ```bash
 git clone https://github.com/sshnii/tronscan-cli.git
 cd tronscan-cli
 npm install
-npm run build
 cp .env.example .env
-# 编辑 .env 填入你的 API Key
+# 编辑 .env，设置 TRONSCAN_API_KEY
 ```
 
 API Key 申请：https://docs.tronscan.org/zh/api/api-keys
 
-> **建议：** 运行 `npm link` 注册全局命令，之后在任意目录都能直接使用 `ts` 命令：
-> ```bash
-> npm link
-> ts help
-> ```
-
-## 方式一：终端命令行
+在本机注册全局命令 **`ts`**（任选其一）：
 
 ```bash
-# 查看所有命令
-ts help
+npm link
+# 或
+npm install -g .
+```
 
-# 示例
+CLI 会从**你克隆下来的项目根目录**（与 `package.json` 同级）读取 `.env`。请在该目录配置好 API Key；之后在任意工作目录都可以直接执行 `ts`。
+
+## 使用方式
+
+```bash
+ts help                         # 查看所有子命令
 ts token usdt                   # 代币信息
 ts search usdt                  # 搜索
 ts block                        # 最新区块
 ts tps                          # 当前 TPS
 ts account TXxx...              # 账户详情
-ts tx af949...                  # 交易哈希
+ts tx af949...                  # 按交易哈希查询
 ts transfer-trc20 TXxx...       # TRC20 转账记录
 ts security-account TXxx...     # 账户风险检测
 ```
 
-## 方式二：在 AI IDE 中用自然语言查询
+## 在 AI IDE 中用自然语言查询
 
 将本项目作为工作目录，AI 会自动读取规则文件，识别你的查询意图，选择合适的 API 接口并解读返回结果。
 

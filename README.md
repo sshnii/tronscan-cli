@@ -4,45 +4,45 @@
 
 A CLI tool built on [TronScan API](https://docs.tronscan.org/), providing 80+ subcommands covering tokens, search, blocks, accounts, governance, transactions, statistics, contracts, security, deep analysis, stablecoins, and more.
 
-Two ways to use: **terminal commands** and **natural language queries in AI IDEs** ([Claude Code](https://claude.ai/code), [Cursor](https://cursor.com), VS Code Copilot, etc.).
+Two ways to use: **`ts` in the terminal** (after global install) and **natural language in AI IDEs** ([Claude Code](https://claude.ai/code), [Cursor](https://cursor.com), VS Code Copilot, etc.).
 
-## Install
+## Install (global `ts` command)
 
 ```bash
 git clone https://github.com/sshnii/tronscan-cli.git
 cd tronscan-cli
 npm install
-npm run build
 cp .env.example .env
-# Edit .env and fill in your API Key
+# Edit .env and set TRONSCAN_API_KEY
 ```
 
 Get your API Key: https://docs.tronscan.org/zh/api/api-keys
 
-> **Tip:** Run `npm link` to register the `ts` command globally, so you can use it from any directory:
-> ```bash
-> npm link
-> ts help
-> ```
-
-## Option 1: Terminal Commands
+Register **`ts`** on your machine (use either one):
 
 ```bash
-# View all commands
-ts help
-
-# Examples
-ts token usdt                   # Token info
-ts search usdt                  # Search
-ts block                        # Latest block
-ts tps                          # Current TPS
-ts account TXxx...              # Account details
-ts tx af949...                  # Transaction hash
-ts transfer-trc20 TXxx...       # TRC20 transfers
-ts security-account TXxx...     # Account risk check
+npm link
+# or
+npm install -g .
 ```
 
-## Option 2: Natural Language Queries in AI IDEs
+The CLI loads `.env` from the **cloned project root** (same folder as `package.json`). Keep your API Key there; you can run `ts` from any working directory.
+
+## Usage
+
+```bash
+ts help                         # list all subcommands
+ts token usdt                   # token info
+ts search usdt                  # search
+ts block                        # latest block
+ts tps                          # current TPS
+ts account TXxx...              # account details
+ts tx af949...                  # transaction by hash
+ts transfer-trc20 TXxx...       # TRC20 transfers
+ts security-account TXxx...     # account risk check
+```
+
+## AI IDEs: Natural Language Queries
 
 Open this project as your working directory. The AI will automatically read the rule files, understand your query intent, select the right API, and interpret the results.
 

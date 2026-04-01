@@ -1,6 +1,6 @@
 # TronScan CLI
 
-基于 TronScan API 的命令行工具（TypeScript），80+ 子命令覆盖账户、交易、区块、代币、安全、统计等场景。
+基于 TronScan API 的命令行工具（Node.js / JavaScript），80+ 子命令覆盖账户、交易、区块、代币、安全、统计等场景。
 
 ## 自动识别规则
 
@@ -8,9 +8,13 @@
 
 ### 执行方式
 
+全局安装后（克隆目录下 `npm link` 或 `npm install -g .`）：
+
 ```bash
-cd "<project_root>" && node dist/index.js <command> [args...]
+ts <command> [args...]
 ```
+
+`.env` 配置在克隆的项目根目录（与 `package.json` 同级）。
 
 ### 触发关键词 → 命令映射
 

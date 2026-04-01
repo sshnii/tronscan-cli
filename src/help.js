@@ -1,9 +1,9 @@
 import { VERSION, c } from './api.js';
 
-export function printHelp(): void {
+export function printHelp() {
   const isTTY = process.stdout.isTTY ?? false;
-  const B = (s: string) => isTTY ? `\x1b[1m${s}\x1b[0m` : s;
-  const C = (s: string) => isTTY ? `\x1b[36m${s}\x1b[0m` : s;
+  const B = (s) => (isTTY ? `\x1b[1m${s}\x1b[0m` : s);
+  const C = (s) => (isTTY ? `\x1b[36m${s}\x1b[0m` : s);
 
   console.log(`${B(`TronScan CLI v${VERSION}`)} - TRON 链上数据查询工具
 
@@ -129,10 +129,10 @@ ${B('全局选项:')}
 `);
 }
 
-export function printCommandHelp(name: string, usage: string, desc: string): void {
+export function printCommandHelp(name, usage, desc) {
   const isTTY = process.stdout.isTTY ?? false;
-  const B = (s: string) => isTTY ? `\x1b[1m${s}\x1b[0m` : s;
-  const C = (s: string) => isTTY ? `\x1b[36m${s}\x1b[0m` : s;
+  const B = (s) => (isTTY ? `\x1b[1m${s}\x1b[0m` : s);
+  const C = (s) => (isTTY ? `\x1b[36m${s}\x1b[0m` : s);
 
   console.log(`${B('用法:')} ${usage}`);
   console.log(`  ${C(desc)}\n`);

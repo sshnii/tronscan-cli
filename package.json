@@ -1,27 +1,18 @@
 {
-  "name": "tronscan-cli",
+  "name": "@tronscanteam/cli",
   "version": "1.0.0",
   "description": "TronScan API CLI tool - 80+ commands for TRON blockchain data",
   "type": "module",
   "bin": {
-    "ts": "./dist/index.js"
+    "ts": "./src/index.js"
   },
   "scripts": {
-    "build": "tsc",
-    "dev": "tsx src/index.ts",
-    "start": "node dist/index.js"
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
   },
   "keywords": ["tron", "tronscan", "blockchain", "cli"],
   "license": "MIT",
   "engines": {
     "node": ">=18"
-  },
-  "dependencies": {
-    "dotenv": "^16.4.5"
-  },
-  "devDependencies": {
-    "@types/node": "^20.14.0",
-    "tsx": "^4.15.0",
-    "typescript": "^5.5.0"
   }
 }
