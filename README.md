@@ -20,7 +20,8 @@ This registers the global command **`ts`** for use in any directory.
 
 Get your API Key: https://docs.tronscan.org/zh/api/api-keys
 
-**Method A: environment variable**  
+**Method A: environment variable**
+
 Persist it in your shell config, then `source` once. zsh example:
 
 ```bash
@@ -30,8 +31,9 @@ source ~/.zshrc
 
 For bash, use `~/.bashrc` or `~/.bash_profile` instead of `~/.zshrc`.
 
-**Method B: `.env` next to the global package**  
-Create `.env` under `$(npm root -g)/@tronscanteam/cli/` with `TRONSCAN_API_KEY=your-api-key` (see `.env.example` in that folder).
+**Method B: `.env` next to the global package**
+
+Create `.env` under `$(npm root -g)/@tronscanteam/cli/` with `TRONSCAN_API_KEY=your-api-key`.
 
 ### 2. Install from source (clone)
 

@@ -20,7 +20,8 @@ npm install -g @tronscanteam/cli
 
 API Key 申请：https://docs.tronscan.org/zh/api/api-keys
 
-**方式 A：环境变量**  
+**方式 A：环境变量**
+
 长期生效：把密钥写进 shell 配置文件，保存后执行一次 `source`。zsh 示例：
 
 ```bash
@@ -30,8 +31,9 @@ source ~/.zshrc
 
 使用 bash 时，将 `~/.zshrc` 换成 `~/.bashrc` 或 `~/.bash_profile`。
 
-**方式 B：全局包目录下的 `.env`**  
-在 `$(npm root -g)/@tronscanteam/cli/` 下创建 `.env`，写入 `TRONSCAN_API_KEY=你的密钥`（可参考同目录的 `.env.example`）。
+**方式 B：全局包目录下的 `.env`**
+
+在 `$(npm root -g)/@tronscanteam/cli/` 下创建 `.env`，写入 `TRONSCAN_API_KEY=你的密钥`。
 
 ### 二、从源码克隆安装
 
