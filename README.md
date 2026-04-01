@@ -95,8 +95,6 @@ No need to memorize commands or API paths — the AI matches the best endpoint f
 | Deep Analysis | 4 | Related accounts, fund flow, large transactions |
 | Stablecoin | 11 | Holder distribution, top holders, mint/burn, liquidity pools |
 
-Order matches `ts help` (plus `api` / `help` meta-commands not listed above).
-
 Run `ts help` for the full command list.
 
 ## API Reference
