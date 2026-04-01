@@ -3,14 +3,34 @@
   "version": "1.0.0",
   "description": "TronScan API CLI tool - 80+ commands for TRON blockchain data",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sshnii/tronscan-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sshnii/tronscan-cli/issues"
+  },
+  "homepage": "https://github.com/sshnii/tronscan-cli#readme",
+  "files": [
+    "src",
+    "README.md",
+    "README_CN.md",
+    "api-reference.md",
+    ".env.example"
+  ],
   "bin": {
-    "ts": "./src/index.js"
+    "ts": "src/index.js"
   },
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js"
   },
-  "keywords": ["tron", "tronscan", "blockchain", "cli"],
+  "keywords": [
+    "tron",
+    "tronscan",
+    "blockchain",
+    "cli"
+  ],
   "license": "MIT",
   "engines": {
     "node": ">=18"

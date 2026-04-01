@@ -30,6 +30,10 @@ The CLI loads `.env` from the **cloned project root** (same folder as `package.j
 
 ## Usage
 
+### 1. In the terminal
+
+After installing `ts` globally, run commands directly (`ts help` lists all subcommands):
+
 ```bash
 ts help                         # list all subcommands
 ts token usdt                   # token info
@@ -42,9 +46,9 @@ ts transfer-trc20 TXxx...       # TRC20 transfers
 ts security-account TXxx...     # account risk check
 ```
 
-## AI IDEs: Natural Language Queries
+### 2. In AI IDEs
 
-Open this project as your working directory. The AI will automatically read the rule files, understand your query intent, select the right API, and interpret the results.
+Open this repo as your working directory and describe what you need in natural language. The AI reads the rule files, infers intent, picks the right API, and interprets the response.
 
 Built-in rule files:
 
