@@ -6,7 +6,26 @@
 
 支持两种使用方式：**终端全局命令 `ts`** 和 **在 AI IDE 中用自然语言查询**（支持 [Claude Code](https://claude.ai/code)、[Cursor](https://cursor.com)、VS Code Copilot 等）。
 
-## 安装（全局命令 `ts`）
+## 安装
+
+### 一、通过 npm 全局安装（推荐）
+
+```bash
+npm install -g @tronscanteam/cli
+```
+
+安装后即可在任意目录使用全局命令 **`ts`**。
+
+**配置 API Key**（任选其一）：
+
+- **推荐**：设置环境变量 `TRONSCAN_API_KEY`（可写入 `~/.zshrc`、`~/.bashrc` 等后执行 `source` 生效）。
+- 或在全局包目录下创建 `.env`：路径为「`npm root -g` 输出的目录」下的 `@tronscanteam/cli/.env`，可参考同目录的 `.env.example`。
+
+API Key 申请：https://docs.tronscan.org/zh/api/api-keys
+
+### 二、从源码克隆安装
+
+适合参与开发或需要修改规则文件（如 `CLAUDE.md`）的场景。
 
 ```bash
 git clone https://github.com/sshnii/tronscan-cli.git
@@ -16,8 +35,6 @@ cp .env.example .env
 # 编辑 .env，设置 TRONSCAN_API_KEY
 ```
 
-API Key 申请：https://docs.tronscan.org/zh/api/api-keys
-
 在本机注册全局命令 **`ts`**（任选其一）：
 
 ```bash
@@ -26,7 +43,7 @@ npm link
 npm install -g .
 ```
 
-CLI 会从**你克隆下来的项目根目录**（与 `package.json` 同级）读取 `.env`。请在该目录配置好 API Key；之后在任意工作目录都可以直接执行 `ts`。
+CLI 会从**克隆下来的项目根目录**（与 `package.json` 同级）读取 `.env`；配置好后在任意工作目录都可执行 `ts`。
 
 ## 使用方式
 

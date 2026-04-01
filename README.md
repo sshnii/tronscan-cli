@@ -6,7 +6,26 @@ A CLI tool built on [TronScan API](https://docs.tronscan.org/), providing 80+ su
 
 Two ways to use: **`ts` in the terminal** (after global install) and **natural language in AI IDEs** ([Claude Code](https://claude.ai/code), [Cursor](https://cursor.com), VS Code Copilot, etc.).
 
-## Install (global `ts` command)
+## Install
+
+### 1. Install from npm (recommended)
+
+```bash
+npm install -g @tronscanteam/cli
+```
+
+This registers the global command **`ts`** for use in any directory.
+
+**API Key** (pick one):
+
+- **Recommended:** set the environment variable `TRONSCAN_API_KEY` (e.g. in `~/.zshrc` / `~/.bashrc`, then `source` the file).
+- Or create `.env` under the global package root: `@tronscanteam/cli` inside the folder printed by `npm root -g`. You can copy `.env.example` from that same folder as a template.
+
+Get your API Key: https://docs.tronscan.org/zh/api/api-keys
+
+### 2. Install from source (clone)
+
+Use this when you develop the tool or need to edit rule files (e.g. `CLAUDE.md`).
 
 ```bash
 git clone https://github.com/sshnii/tronscan-cli.git
@@ -16,9 +35,7 @@ cp .env.example .env
 # Edit .env and set TRONSCAN_API_KEY
 ```
 
-Get your API Key: https://docs.tronscan.org/zh/api/api-keys
-
-Register **`ts`** on your machine (use either one):
+Register **`ts`** on your machine (either one):
 
 ```bash
 npm link
@@ -26,7 +43,7 @@ npm link
 npm install -g .
 ```
 
-The CLI loads `.env` from the **cloned project root** (same folder as `package.json`). Keep your API Key there; you can run `ts` from any working directory.
+The CLI reads `.env` from the **cloned project root** (next to `package.json`). After that, run `ts` from any working directory.
 
 ## Usage
 
