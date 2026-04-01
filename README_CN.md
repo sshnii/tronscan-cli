@@ -16,7 +16,9 @@ npm install -g @tronscanteam/cli
 
 安装后即可在任意目录使用全局命令 **`ts`**。
 
-**配置 API Key**（任选一种；npm 全局安装不会读取你克隆仓库里的 `.env`）：
+**配置 API Key**（任选一种）：
+
+API Key 申请：https://docs.tronscan.org/zh/api/api-keys
 
 **方式 A：环境变量（推荐）**  
 长期生效：把密钥写进 shell 配置文件，保存后执行一次 `source`。zsh 示例：
@@ -30,8 +32,6 @@ source ~/.zshrc
 
 **方式 B：全局包目录下的 `.env`**  
 在 `$(npm root -g)/@tronscanteam/cli/` 下创建 `.env`，写入 `TRONSCAN_API_KEY=你的密钥`（可参考同目录的 `.env.example`）。
-
-API Key 申请：https://docs.tronscan.org/zh/api/api-keys
 
 ### 二、从源码克隆安装
 
