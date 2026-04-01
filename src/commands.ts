@@ -322,8 +322,8 @@ export const commands: Record<string, CommandDef> = {
     usage: 'ts trx-supply', desc: 'TRX 供应/销毁',
     run: () => get('/api/funds')
   },
-  'turnover': {
-    usage: 'ts turnover', desc: 'TRX 发行与销毁分析',
+  'trx-turnover': {
+    usage: 'ts trx-turnover', desc: 'TRX 发行与销毁分析',
     run: () => get('/api/turnover')
   },
   'tx-trend': {
