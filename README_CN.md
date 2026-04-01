@@ -20,7 +20,7 @@ npm install -g @tronscanteam/cli
 
 API Key 申请：https://docs.tronscan.org/zh/api/api-keys
 
-**方式 A：环境变量（推荐）**  
+**方式 A：环境变量**  
 长期生效：把密钥写进 shell 配置文件，保存后执行一次 `source`。zsh 示例：
 
 ```bash
@@ -35,8 +35,6 @@ source ~/.zshrc
 
 ### 二、从源码克隆安装
 
-适合参与开发或需要修改规则文件（如 `CLAUDE.md`）的场景。
-
 ```bash
 git clone https://github.com/sshnii/tronscan-cli.git
 cd tronscan-cli
@@ -45,7 +43,7 @@ cp .env.example .env
 # 编辑 .env，设置 TRONSCAN_API_KEY
 ```
 
-在本机注册全局命令 **`ts`**（任选其一）：
+在本机注册全局命令 **`ts`**：
 
 ```bash
 npm link

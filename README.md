@@ -20,7 +20,7 @@ This registers the global command **`ts`** for use in any directory.
 
 Get your API Key: https://docs.tronscan.org/zh/api/api-keys
 
-**Method A: environment variable (recommended)**  
+**Method A: environment variable**  
 Persist it in your shell config, then `source` once. zsh example:
 
 ```bash
@@ -35,8 +35,6 @@ Create `.env` under `$(npm root -g)/@tronscanteam/cli/` with `TRONSCAN_API_KEY=y
 
 ### 2. Install from source (clone)
 
-Use this when you develop the tool or need to edit rule files (e.g. `CLAUDE.md`).
-
 ```bash
 git clone https://github.com/sshnii/tronscan-cli.git
 cd tronscan-cli
@@ -45,7 +43,7 @@ cp .env.example .env
 # Edit .env and set TRONSCAN_API_KEY
 ```
 
-Register **`ts`** on your machine (either one):
+Register **`ts`** on your machine:
 
 ```bash
 npm link
