@@ -37,7 +37,7 @@ ts search usdt                  # Global search
 ts block                        # Latest block
 ts tps                          # Current TPS
 ts account TXxx...              # Account details
-ts tx af949...                  # Transaction hash (64 hex, no 0x)
+ts tx af949...                  # Transaction hash
 ts transfer-trc20 TXxx...       # TRC20 transfers
 ts security-account TXxx...     # Account risk check
 ```
@@ -57,14 +57,17 @@ Built-in rule files:
 Example using Claude Code:
 
 ```
-You: Check the balance of TXxx...
-AI:  Runs ts account TXxx... and returns interpreted results
+You: Look up USDT token info
+AI:  Runs ts token usdt and summarizes key fields (price, supply, holders, etc.)
 
-You: Is this token safe? TRxx...
-AI:  Runs ts security-token TRxx... and analyzes risks
+You: Show account details for TXxx...
+AI:  Runs ts account TXxx... and interprets balance, resources, and related fields
 
-You: Analyze USDT transfers for this address
-AI:  Runs ts transfer-trc20 TXxx... and generates a transfer report
+You: What's the TRON network overview?
+AI:  Runs ts overview and summarizes the bundled network stats
+
+You: What's the latest block?
+AI:  Runs ts block and summarizes the latest block (or height and key fields)
 
 You: What's the current TPS?
 AI:  Runs ts tps and returns the result

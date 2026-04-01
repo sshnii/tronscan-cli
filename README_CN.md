@@ -37,7 +37,7 @@ ts search usdt                  # 全局搜索
 ts block                        # 最新区块
 ts tps                          # 当前 TPS
 ts account TXxx...              # 账户详情
-ts tx af949...                  # 交易哈希（64 位十六进制，无 0x）
+ts tx af949...                  # 交易哈希
 ts transfer-trc20 TXxx...       # TRC20 转账记录
 ts security-account TXxx...     # 账户风险检测
 ```
@@ -57,14 +57,17 @@ ts security-account TXxx...     # 账户风险检测
 以 Claude Code 为例，你只需要用自然语言描述需求：
 
 ```
-你：查一下这个地址的余额 TXxx...
-AI：自动执行 ts account TXxx... 并返回解读结果
+你：查一下 USDT 代币信息
+AI：自动执行 ts token usdt 并解读价格、供应、持币地址等关键字段
 
-你：这个代币安全吗 TRxx...
-AI：自动执行 ts security-token TRxx... 并分析风险
+你：查一下这个地址的账户信息 TXxx...
+AI：自动执行 ts account TXxx... 并解读余额、资源等相关字段
 
-你：分析这个地址的 USDT 转账记录
-AI：自动执行 ts transfer-trc20 TXxx... 并生成转账分析报告
+你：TRON 网络概况怎么样
+AI：自动执行 ts overview 并汇总网络综合数据
+
+你：最新区块是什么
+AI：自动执行 ts block 并解读最新区块（或高度与关键字段）
 
 你：当前 TPS 多少
 AI：自动执行 ts tps 并返回结果

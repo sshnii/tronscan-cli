@@ -854,4 +854,7 @@ HELP
   esac
 }
 
-echo -e "${_C_GREEN}✓ TronScan CLI v${TS_VERSION} 已加载${_C_RESET}。输入 ts help 查看命令列表" >&2
+if [[ -z "$_TS_LOADED" ]]; then
+  echo -e "${_C_GREEN}✓ TronScan CLI v${TS_VERSION} 已加载${_C_RESET}。输入 ts help 查看命令列表" >&2
+  export _TS_LOADED=1
+fi
