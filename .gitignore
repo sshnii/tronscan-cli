@@ -1,4 +1,6 @@
 .env
+node_modules/
+dist/
 
 # 本地测试脚本（不上传）
 scripts/
