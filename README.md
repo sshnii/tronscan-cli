@@ -16,10 +16,20 @@ npm install -g @tronscanteam/cli
 
 This registers the global command **`ts`** for use in any directory.
 
-**API Key** (pick one):
+**API Key** (pick one; a global npm install does **not** read `.env` from a Git clone):
 
-- **Recommended:** set the environment variable `TRONSCAN_API_KEY` (e.g. in `~/.zshrc` / `~/.bashrc`, then `source` the file).
-- Or create `.env` under the global package root: `@tronscanteam/cli` inside the folder printed by `npm root -g`. You can copy `.env.example` from that same folder as a template.
+**Method A: environment variable (recommended)**  
+Persist it in your shell config, then `source` once. zsh example:
+
+```bash
+echo 'export TRONSCAN_API_KEY="your-api-key"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+For bash, use `~/.bashrc` or `~/.bash_profile` instead of `~/.zshrc`.
+
+**Method B: `.env` next to the global package**  
+Create `.env` under `$(npm root -g)/@tronscanteam/cli/` with `TRONSCAN_API_KEY=your-api-key` (see `.env.example` in that folder).
 
 Get your API Key: https://docs.tronscan.org/zh/api/api-keys
 
