@@ -87,8 +87,6 @@ ${B('全局选项:')}
     ts token-tvc                    代币链上价值(TVC)
     ts token-analysis               代币交易分析
     ts token-transfer-analysis      代币转账分析
-    ts block-size                   平均区块大小
-    ts blockchain-size              区块链总大小
 
   合约:
     ts contract <addr>              合约详情
@@ -100,7 +98,7 @@ ${B('全局选项:')}
     ts contract-analysis <addr> [type] 合约日度分析(type:0-5)
     ts contract-all-callers <addr> [day] 所有调用者列表
     ts contract-triggers            合约触发交易
-    ts contract-events '<json>'     合约事件(POST)
+
 
   安全:
     ts security-account <addr>      账户风险检测

@@ -242,10 +242,6 @@ export const commands: Record<string, CommandDef> = {
     usage: 'ts contract-triggers [--start N] [--limit N]', desc: '合约触发交易',
     run: (a, o) => get(`/api/contracts/trigger?start=${o.start}&limit=${o.limit}`)
   },
-  'contract-events': {
-    usage: "ts contract-events '<json>'", desc: '合约事件(POST)',
-    run: (a) => post('/api/contracts/smart-contract-triggers-batch', require(a, 0, 'json', "ts contract-events '<json>'"))
-  },
 
   // --- 超级代表 ---
 
@@ -385,14 +381,6 @@ export const commands: Record<string, CommandDef> = {
   'token-transfer-analysis': {
     usage: 'ts token-transfer-analysis', desc: '代币转账分析',
     run: () => get('/api/tokenTransfer/analysis')
-  },
-  'block-size': {
-    usage: 'ts block-size', desc: '平均区块大小',
-    run: () => get('/api/overview/dailyavgblockSize')
-  },
-  'blockchain-size': {
-    usage: 'ts blockchain-size', desc: '区块链总大小',
-    run: () => get('/api/overview/totalblockchainsize')
   },
 
   // --- 深度分析 ---
