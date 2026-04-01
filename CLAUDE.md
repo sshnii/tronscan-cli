@@ -39,7 +39,7 @@
 ### 执行模板
 
 ```bash
-cd "/Users/songshaohua/Desktop/tronscan cli" && node dist/index.js <command> [args...]
+cd "<project_root>" && node dist/index.js <command> [args...]
 ```
 
 ### 输出要求
