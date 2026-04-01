@@ -84,7 +84,8 @@ No need to memorize commands or API paths — the AI matches the best endpoint f
 | Category | Count | Description |
 |----------|-------|-------------|
 | Token | 7 | Token details, holders, price, list, distribution |
-| Search | 5 | Search, TPS, TRON network overview, trending, nodes |
+| Search | 2 | Search, trending tokens |
+| Overview | 3 | TPS, TRON network overview, nodes |
 | Block | 1 | Latest or specific block |
 | Account | 11 | Balance, holdings, resources, approvals, votes, analysis |
 | Super Representative | 4 | SR list, votes, chain parameters, proposals |

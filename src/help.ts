@@ -28,9 +28,11 @@ ${B('全局选项:')}
 
   搜索:
     ts search <keyword>             搜索
+    ts hot-token                    热搜代币排行
+
+  概览:
     ts tps                          当前 TPS
     ts overview                     TRON 网络概览
-    ts hot-token                    热搜代币排行
     ts nodes                        全网节点信息
 
   区块:
