@@ -16,7 +16,7 @@ npm install -g @tronscanteam/cli
 
 This registers the global command **`ts`** for use in any directory.
 
-**API Key** (pick one):
+**API Key**:
 
 Get your API Key: https://docs.tronscan.org/zh/api/api-keys
 
@@ -57,7 +57,7 @@ The CLI reads `.env` from the **cloned project root** (next to `package.json`). 
 
 ### 1. In the terminal
 
-After installing `ts` globally, run commands directly (`ts help` lists all subcommands):
+After installing `ts` globally, run commands directly:
 
 ```bash
 ts help                         # list all subcommands
