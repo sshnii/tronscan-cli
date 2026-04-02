@@ -121,8 +121,8 @@ No need to memorize commands or API paths — the AI matches the best endpoint f
 | Account | 11 | Balance, holdings, resources, approvals, votes, analysis |
 | Super Representative | 4 | SR list, votes, chain parameters, proposals |
 | Transaction | 10 | Transaction details, transfers (TRX/TRC20/TRC721/TRC1155) |
-| Statistics | 19 | TRX supply, transaction trends, active accounts, energy, DeFi TVL |
-| Contract | 10 | Contract details, callers, energy consumption, daily analysis |
+| Statistics | 17 | TRX supply, transaction trends, active accounts, energy, DeFi TVL |
+| Contract | 9 | Contract details, callers, energy consumption, daily analysis |
 | Security | 6 | Account/token/URL/transaction risk detection, authorization check |
 | Deep Analysis | 4 | Related accounts, fund flow, large transactions |
 | Stablecoin | 11 | Holder distribution, top holders, mint/burn, liquidity pools |
