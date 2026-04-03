@@ -29,7 +29,8 @@ export function loadConfig() {
   }
   if (!apiKey) {
     err('未找到 API Key');
-    warn('请设置 TRONSCAN_API_KEY 环境变量或创建 .env 文件');
+    warn('运行 ts setup <your-api-key> 快速配置');
+    warn('API Key 申请: https://tronscan.org/#/developer/api');
     process.exit(2);
   }
 }
