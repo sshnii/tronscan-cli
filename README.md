@@ -14,7 +14,7 @@ Two ways to use: **`ts` in the terminal** (after global install) and **natural l
 npm install -g @tronscanteam/cli
 ```
 
-This registers the global command **`ts`** for use in any directory.
+This registers the global command **`ts`** for use in any directory. Run `ts help` to see all commands.
 
 **API Key**:
 
@@ -128,8 +128,6 @@ No need to memorize commands or API paths — the AI matches the best endpoint f
 | Security | 6 | Account/token/URL/transaction risk detection, authorization check |
 | Deep Analysis | 4 | Related accounts, fund flow, large transactions |
 | Stablecoin | 11 | Holder distribution, top holders, mint/burn, liquidity pools |
-
-Run `ts help` for the full command list.
 
 ## API Reference
 
