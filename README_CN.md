@@ -75,9 +75,7 @@ ts security-account TXxx...     # 账户风险检测
 
 ### 二、在 AI IDE 中使用
 
-将本项目作为工作目录打开，用自然语言描述需求即可；AI 会读取规则文件，识别意图、选择接口并解读返回结果。
-
-已内置规则文件：
+若要在 AI IDE 中使用，建议优先通过从源码克隆的方式安装。克隆会下载完整的规则文件（`CLAUDE.md`、`.cursorrules`、`.github/copilot-instructions.md`），提升 AI 回复的准确性。首次使用运行 `ts setup` 即可快速完成 API Key 配置。
 
 | AI IDE | 规则文件 |
 |--------|----------|

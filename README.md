@@ -75,7 +75,7 @@ ts security-account TXxx...     # account risk check
 
 ### 2. In AI IDEs
 
-Open this repo as your working directory and describe what you need in natural language. The AI reads the rule files, infers intent, picks the right API, and interprets the response.
+To use with AI IDEs, we recommend installing from source (clone). Cloning downloads the full set of rule files (`CLAUDE.md`, `.cursorrules`, `.github/copilot-instructions.md`), which improve AI response accuracy. Run `ts setup` on first use to quickly configure your API Key.
 
 Built-in rule files:
 

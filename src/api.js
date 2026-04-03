@@ -7,7 +7,7 @@ import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const PROJECT_ROOT = resolve(__dirname, '..');
+export const PROJECT_ROOT = resolve(__dirname, '..');
 
 export const VERSION = '1.0.0';
 const BASE_URL = 'https://apilist.tronscanapi.com';
@@ -82,7 +82,12 @@ export async function get(path) {
     if (body) console.error(body);
     process.exit(4);
   }
-  return res.json();
+  const text = await res.text();
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error(`API 返回非 JSON: ${text.slice(0, 200)}`);
+  }
 }
 
 export async function post(path, body) {
@@ -108,7 +113,12 @@ export async function post(path, body) {
     if (text) console.error(text);
     process.exit(4);
   }
-  return res.json();
+  const text = await res.text();
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error(`API 返回非 JSON: ${text.slice(0, 200)}`);
+  }
 }
 
 // ============ Output ============

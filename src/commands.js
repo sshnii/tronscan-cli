@@ -54,7 +54,7 @@ export const commands = {
   },
   'account-votes': {
     usage: 'ts account-votes <address>', desc: '投票记录',
-    run: (a) => get(`/api/vote?address=${require(a, 0, 'address', 'ts account-votes <address>')}`)
+    run: (a) => get(`/api/vote?voter=${require(a, 0, 'address', 'ts account-votes <address>')}`)
   },
   'account-analysis': {
     usage: 'ts account-analysis <address>', desc: '日度分析',
@@ -360,8 +360,12 @@ export const commands = {
     run: () => get('/api/tokenTvc')
   },
   'token-analysis': {
-    usage: 'ts token-analysis', desc: '代币交易分析',
-    run: () => get('/api/token/analysis')
+    usage: 'ts token-analysis <contract|symbol>', desc: '代币交易分析',
+    run: async (a) => {
+      require(a, 0, 'contract|symbol', 'ts token-analysis <contract|symbol>');
+      const contract = await resolveAndLog(a[0], resolveContract);
+      return get(`/api/token/analysis?token=${contract}`);
+    }
   },
   'token-transfer-analysis': {
     usage: 'ts token-transfer-analysis', desc: '代币转账分析',
@@ -383,8 +387,12 @@ export const commands = {
     run: (a) => get(`/api/deep/account/token/bigAmount?address=${require(a, 0, 'address', 'ts deep-big-tx <address>')}`)
   },
   'deep-token-transfer': {
-    usage: 'ts deep-token-transfer <address>', desc: '代币转账次数',
-    run: (a) => get(`/api/deep/account/holderToken/basicInfo/trc20/transfer?address=${require(a, 0, 'address', 'ts deep-token-transfer <address>')}`)
+    usage: 'ts deep-token-transfer <address> <contract>', desc: '代币转账次数',
+    run: (a) => {
+      require(a, 0, 'address', 'ts deep-token-transfer <address> <contract>');
+      require(a, 1, 'contract', 'ts deep-token-transfer <address> <contract>');
+      return get(`/api/deep/account/holderToken/basicInfo/trc20/transfer?accountAddress=${a[0]}&tokenAddress=${a[1]}`);
+    }
   },
 
   // --- 稳定币 ---
@@ -402,32 +410,32 @@ export const commands = {
     run: () => get('/api/stableCoin/holder/top')
   },
   'stable-big-tx': {
-    usage: 'ts stable-big-tx', desc: '大额交易',
-    run: () => get('/api/deep/stableCoin/bigAmount')
+    usage: 'ts stable-big-tx [types]', desc: '大额交易 (types: 1=USDT 2=USDJ 3=TUSD 4=USDC)',
+    run: (a, o) => get(`/api/deep/stableCoin/bigAmount?types=${a[0] || '1'}&start=${o.start}&limit=${o.limit}`)
   },
   'stable-events': {
-    usage: 'ts stable-events', desc: '增发/销毁/黑名单事件',
-    run: () => get('/api/deep/stableCoin/totalSupply/keyEvents')
+    usage: 'ts stable-events [--sort 0|1] [--start N] [--limit N]', desc: '增发/销毁/黑名单事件 (sort: 0=asc 1=desc)',
+    run: (a, o) => get(`/api/deep/stableCoin/totalSupply/keyEvents?direction=1&sort=${o.sort || '1'}&start=${o.start}&limit=${o.limit}`)
   },
   'stable-dist': {
-    usage: 'ts stable-dist', desc: '交易所/DeFi 分布',
-    run: () => get('/api/stableCoin/distribution')
+    usage: 'ts stable-dist <contract>', desc: '交易所/DeFi 分布',
+    run: (a) => get(`/api/stableCoin/distribution?token=${require(a, 0, 'contract', 'ts stable-dist <contract>  (如 USDT: TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t)')}`)
   },
   'stable-liquidity': {
     usage: 'ts stable-liquidity', desc: '流动性操作记录',
     run: () => get('/api/deep/stableCoin/liquidity/transaction')
   },
   'stable-pool': {
-    usage: 'ts stable-pool', desc: '池子概览(TVL)',
-    run: () => get('/api/stableCoin/pool/overview')
+    usage: 'ts stable-pool <pool_address>', desc: '池子概览(TVL)',
+    run: (a) => get(`/api/stableCoin/pool/overview?pool=${require(a, 0, 'pool_address', 'ts stable-pool <pool_address>')}`)
   },
   'stable-pool-trend': {
-    usage: 'ts stable-pool-trend', desc: '池子趋势',
-    run: () => get('/api/stableCoin/pool/trend')
+    usage: 'ts stable-pool-trend <pool_address>', desc: '池子趋势',
+    run: (a) => get(`/api/stableCoin/pool/trend?pool=${require(a, 0, 'pool_address', 'ts stable-pool-trend <pool_address>')}`)
   },
   'stable-pool-change': {
-    usage: 'ts stable-pool-change', desc: '池子历史变化',
-    run: () => get('/api/stableCoin/pool/change')
+    usage: 'ts stable-pool-change <pool_address>', desc: '池子历史变化',
+    run: (a) => get(`/api/stableCoin/pool/change?pool=${require(a, 0, 'pool_address', 'ts stable-pool-change <pool_address>')}`)
   },
   'stable-tvl': {
     usage: 'ts stable-tvl', desc: '稳定币 TVL 分布',

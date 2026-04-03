@@ -17,6 +17,9 @@ ${B('全局选项:')}
   --help, -h    显示命令帮助
   --version, -V 显示版本号
 
+  配置:
+    ts setup [api-key]              配置 API Key（首次使用必须）
+
   代币:
     ts token <contract|symbol>      TRC20 代币详情（支持 USDT 等符号）
     ts token-trc10 <id|symbol>      TRC10 代币详情
@@ -85,7 +88,7 @@ ${B('全局选项:')}
     ts bandwidth-daily              每日带宽消耗
     ts trigger-stats                合约调用分布
     ts token-tvc                    代币链上价值(TVC)
-    ts token-analysis               代币交易分析
+    ts token-analysis <contract|symbol> 代币交易分析
     ts token-transfer-analysis      代币转账分析
 
   合约:
@@ -112,19 +115,19 @@ ${B('全局选项:')}
     ts deep-related <addr>          关联账户
     ts deep-flow <addr>             资金流向
     ts deep-big-tx <addr>           大额交易
-    ts deep-token-transfer <addr>   代币转账次数
+    ts deep-token-transfer <addr> <contract> 代币转账次数
 
   稳定币:
     ts stable-holders               持仓分布概览
     ts stable-change                持有者变化趋势
     ts stable-top                   大户排行
-    ts stable-big-tx                大额交易
+    ts stable-big-tx [types]        大额交易 (1=USDT 2=USDJ 3=TUSD 4=USDC)
     ts stable-events                增发/销毁/黑名单事件
-    ts stable-dist                  交易所/DeFi 分布
+    ts stable-dist <contract>       交易所/DeFi 分布
     ts stable-liquidity             流动性操作记录
-    ts stable-pool                  池子概览(TVL)
-    ts stable-pool-trend            池子趋势
-    ts stable-pool-change           池子历史变化
+    ts stable-pool <pool_address>   池子概览(TVL)
+    ts stable-pool-trend <pool_address> 池子趋势
+    ts stable-pool-change <pool_address> 池子历史变化
     ts stable-tvl                   稳定币 TVL 分布
 `);
 }

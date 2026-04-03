@@ -36,6 +36,15 @@
 | SR/超级代表 | `ts sr` |
 | 链参数 | `ts params` |
 
+### 首次配置
+
+当用户提到配置 API Key、首次安装、setup 等，引导执行：
+
+```bash
+ts setup <your-api-key>    # 直接写入
+ts setup                   # 查看配置状态和引导
+```
+
 ### 执行模板
 
 先在本机全局安装（在克隆目录执行 `npm link` 或 `npm install -g .`），再：
@@ -43,8 +52,6 @@
 ```bash
 ts <command> [args...]
 ```
-
-`.env` 放在克隆的项目根目录（与 `package.json` 同级）；全局 `ts` 仍从该目录读取 API Key。
 
 ### 输出要求
 
