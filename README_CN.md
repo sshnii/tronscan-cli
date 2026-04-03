@@ -21,7 +21,7 @@ npm install -g @tronscanteam/cli
 API Key 申请：https://docs.tronscan.org/zh/api/api-keys
 
 ```bash
-ts setup YOUR_API_KEY
+ts setup YOUR_API_KEY    # 替换为你的真实 API Key
 ```
 
 ### 二、从源码克隆安装
@@ -31,7 +31,7 @@ git clone https://github.com/sshnii/tronscan-cli.git
 cd tronscan-cli
 npm install
 npm link
-ts setup YOUR_API_KEY
+ts setup YOUR_API_KEY    # 替换为你的真实 API Key
 ```
 
 ## 使用方式

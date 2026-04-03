@@ -21,7 +21,7 @@ This registers the global command **`ts`** for use in any directory. Run `ts set
 Get your API Key: https://docs.tronscan.org/zh/api/api-keys
 
 ```bash
-ts setup YOUR_API_KEY
+ts setup YOUR_API_KEY    # replace with your actual API Key
 ```
 
 ### 2. Install from source (clone)
@@ -31,7 +31,7 @@ git clone https://github.com/sshnii/tronscan-cli.git
 cd tronscan-cli
 npm install
 npm link
-ts setup YOUR_API_KEY
+ts setup YOUR_API_KEY    # replace with your actual API Key
 ```
 
 ## Usage
