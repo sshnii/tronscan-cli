@@ -93,9 +93,9 @@ if (cmd === 'setup') {
 
   console.log(bold('TronScan CLI 配置向导\n'));
   console.log(`  1. 申请 API Key: ${bold('https://tronscan.org/#/developer/api')}`);
-  console.log(`  2. 运行: ${bold('ts setup <your-api-key>')}`);
+  console.log(`  2. 运行: ${bold('ts setup YOUR_API_KEY')}`);
   console.log(`     或手动编辑: ${dim(envPath)}`);
-  console.log(`\n  也可设置环境变量: ${bold('export TRONSCAN_API_KEY=<your-api-key>')}`);
+  console.log(`\n  也可设置环境变量: ${bold('export TRONSCAN_API_KEY=YOUR_API_KEY')}`);
   process.exit(0);
 }
 

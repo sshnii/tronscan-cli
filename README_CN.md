@@ -14,28 +14,15 @@
 npm install -g @tronscanteam/cli
 ```
 
-安装后即可在任意目录使用全局命令 **`ts`**，输入 `ts help` 查看全部命令。
+安装后即可在任意目录使用全局命令 **`ts`**，输入 `ts setup` 设置 API Key，输入 `ts help` 查看全部命令。
 
 **配置 API Key**：
 
 API Key 申请：https://docs.tronscan.org/zh/api/api-keys
 
-**方式 A：`ts setup`**
-
 ```bash
 ts setup YOUR_API_KEY
 ```
-
-**方式 B：环境变量**
-
-长期生效：把密钥写进 shell 配置文件，保存后执行一次 `source`。zsh 示例：
-
-```bash
-echo 'export TRONSCAN_API_KEY="你的密钥"' >> ~/.zshrc
-source ~/.zshrc
-```
-
-使用 bash 时，将 `~/.zshrc` 换成 `~/.bashrc` 或 `~/.bash_profile`。
 
 ### 二、从源码克隆安装
 
@@ -43,19 +30,9 @@ source ~/.zshrc
 git clone https://github.com/sshnii/tronscan-cli.git
 cd tronscan-cli
 npm install
-cp .env.example .env
-# 编辑 .env，设置 TRONSCAN_API_KEY
-```
-
-在本机注册全局命令 **`ts`**：
-
-```bash
 npm link
-# 或
-npm install -g .
+ts setup YOUR_API_KEY
 ```
-
-CLI 会从**克隆下来的项目根目录**（与 `package.json` 同级）读取 `.env`；配置好后在任意工作目录都可执行 `ts`。
 
 ## 使用方式
 

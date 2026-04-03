@@ -14,28 +14,15 @@ Two ways to use: **`ts` in the terminal** (after global install) and **natural l
 npm install -g @tronscanteam/cli
 ```
 
-This registers the global command **`ts`** for use in any directory. Run `ts help` to see all commands.
+This registers the global command **`ts`** for use in any directory. Run `ts setup` to configure your API Key, and `ts help` to see all commands.
 
 **API Key**:
 
 Get your API Key: https://docs.tronscan.org/zh/api/api-keys
 
-**Method A: `ts setup`**
-
 ```bash
 ts setup YOUR_API_KEY
 ```
-
-**Method B: environment variable**
-
-Persist it in your shell config, then `source` once. zsh example:
-
-```bash
-echo 'export TRONSCAN_API_KEY="your-api-key"' >> ~/.zshrc
-source ~/.zshrc
-```
-
-For bash, use `~/.bashrc` or `~/.bash_profile` instead of `~/.zshrc`.
 
 ### 2. Install from source (clone)
 
@@ -43,19 +30,9 @@ For bash, use `~/.bashrc` or `~/.bash_profile` instead of `~/.zshrc`.
 git clone https://github.com/sshnii/tronscan-cli.git
 cd tronscan-cli
 npm install
-cp .env.example .env
-# Edit .env and set TRONSCAN_API_KEY
-```
-
-Register **`ts`** on your machine:
-
-```bash
 npm link
-# or
-npm install -g .
+ts setup YOUR_API_KEY
 ```
-
-The CLI reads `.env` from the **cloned project root** (next to `package.json`). After that, run `ts` from any working directory.
 
 ## Usage
 
