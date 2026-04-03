@@ -59,6 +59,12 @@ if (cmd === 'setup') {
   const inputKey = positional[0];
 
   if (inputKey) {
+    // 校验：过滤明显无效的输入
+    if (/[<>]/.test(inputKey) || inputKey === 'your-api-key' || inputKey === 'your_api_key_here') {
+      err('请替换为你的真实 API Key');
+      warn('API Key 申请: https://tronscan.org/#/developer/api');
+      process.exit(2);
+    }
     // 直接写入 API Key
     writeFileSync(envPath, `TRONSCAN_API_KEY=${inputKey}\n`);
     console.log(green('✓ API Key 已写入 .env'));

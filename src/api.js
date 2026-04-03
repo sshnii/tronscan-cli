@@ -30,7 +30,7 @@ export function loadConfig() {
   if (!apiKey) {
     err('未找到 API Key');
     warn('API Key 申请: https://tronscan.org/#/developer/api');
-    warn('运行 ts setup <your-api-key> 快速配置');
+    warn('运行 ts setup YOUR_API_KEY 快速配置');
     process.exit(2);
   }
 }
