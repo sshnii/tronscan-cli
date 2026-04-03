@@ -8,7 +8,7 @@ Two ways to use: **`ts` in the terminal** (after global install) and **natural l
 
 ## Install
 
-### 1. Install from npm (recommended)
+### 1. Install from npm
 
 ```bash
 npm install -g @tronscanteam/cli
@@ -20,7 +20,7 @@ This registers the global command **`ts`** for use in any directory.
 
 Get your API Key: https://docs.tronscan.org/zh/api/api-keys
 
-**Method A: `ts setup` (recommended)**
+**Method A: `ts setup`**
 
 ```bash
 ts setup YOUR_API_KEY

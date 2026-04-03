@@ -8,7 +8,7 @@
 
 ## 安装
 
-### 一、通过 npm 全局安装（推荐）
+### 一、通过 npm 全局安装
 
 ```bash
 npm install -g @tronscanteam/cli
@@ -20,7 +20,7 @@ npm install -g @tronscanteam/cli
 
 API Key 申请：https://docs.tronscan.org/zh/api/api-keys
 
-**方式 A：`ts setup`（推荐）**
+**方式 A：`ts setup`**
 
 ```bash
 ts setup YOUR_API_KEY
