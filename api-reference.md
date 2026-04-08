@@ -146,6 +146,8 @@ Base URL: `https://apilist.tronscanapi.com`
 | `GET /api/overview/totalblockchainsize` | 区块链总大小 | - |
 | `GET /api/top10` | Top 10 排行 | - |
 | `GET /api/defiTvl` | DeFi TVL | - |
+| `GET /api/external/turnover/new` | TRON 协议总收入 | `size`, `start`, `end`, `timeType`(0=天/1=月/2=季/3=年) |
+| `GET /api/external/consumption/statistic` | 销毁/质押收入明细 | `size`, `start`, `end`, `timeType`, `type`(burn/stake) |
 
 ---
 

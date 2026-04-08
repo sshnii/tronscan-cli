@@ -60,7 +60,8 @@ if (cmd === 'setup') {
 
   if (inputKey) {
     // 校验：过滤明显无效的输入
-    if (/[<>]/.test(inputKey) || inputKey === 'your-api-key' || inputKey === 'your_api_key_here') {
+    const lower = inputKey.toLowerCase().replace(/[-_]/g, '');
+    if (/[<>]/.test(inputKey) || lower === 'yourapikey' || lower === 'yourapikeyhere') {
       err('请替换为你的真实 API Key');
       warn('API Key 申请: https://tronscan.org/#/developer/api');
       process.exit(2);
@@ -95,7 +96,6 @@ if (cmd === 'setup') {
   console.log(`  1. 申请 API Key: ${bold('https://tronscan.org/#/developer/api')}`);
   console.log(`  2. 运行: ${bold('ts setup YOUR_API_KEY')}`);
   console.log(`     或手动编辑: ${dim(envPath)}`);
-  console.log(`\n  也可设置环境变量: ${bold('export TRONSCAN_API_KEY=YOUR_API_KEY')}`);
   process.exit(0);
 }
 

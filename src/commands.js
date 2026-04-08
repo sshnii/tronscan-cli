@@ -307,6 +307,30 @@ export const commands = {
     usage: 'ts trx-turnover', desc: 'TRX 发行与销毁分析',
     run: () => get('/api/turnover')
   },
+  'protocol-revenue': {
+    usage: 'ts protocol-revenue [timeType]', desc: 'TRON 协议总收入 (timeType: 0=天 1=月 2=季 3=年, 默认0)',
+    run: (a, o) => {
+      const end = Date.now();
+      const start = end - 365 * 24 * 3600 * 1000; // 近一年
+      return get(`/api/external/turnover/new?size=${o.limit || '1000'}&start=${start}&end=${end}&timeType=${a[0] || '0'}`);
+    }
+  },
+  'burn-revenue': {
+    usage: 'ts burn-revenue [timeType]', desc: 'TRON 销毁收入 (timeType: 0=天 1=月 2=季 3=年, 默认0)',
+    run: (a, o) => {
+      const end = Date.now();
+      const start = end - 365 * 24 * 3600 * 1000;
+      return get(`/api/external/consumption/statistic?size=${o.limit || '1000'}&start=${start}&end=${end}&timeType=${a[0] || '0'}&type=burn`);
+    }
+  },
+  'stake-revenue': {
+    usage: 'ts stake-revenue [timeType]', desc: 'TRON 质押收入 (timeType: 0=天 1=月 2=季 3=年, 默认0)',
+    run: (a, o) => {
+      const end = Date.now();
+      const start = end - 365 * 24 * 3600 * 1000;
+      return get(`/api/external/consumption/statistic?size=${o.limit || '1000'}&start=${start}&end=${end}&timeType=${a[0] || '0'}&type=stake`);
+    }
+  },
   'tx-trend': {
     usage: 'ts tx-trend', desc: '每日交易趋势',
     run: () => get('/api/overview/dailytransactionnum')
