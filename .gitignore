@@ -1,7 +1,33 @@
+# Secrets & machine-local auth
 .env
-node_modules/
-.DS_Store
+.env.local
+.env.*.local
 .npmrc
-config/
+
+# Dependencies
+node_modules/
+
+# OS / logs
+.DS_Store
+*.log
+
+# Local / generated data (large API dumps, scratch output)
 api-responses.json
+
+# Maintainer-only scripts that regenerate local artifacts (not shipped in npm `files`)
 fetch-all.mjs
+
+# Local config overrides
+config/
+
+# IDE & assistant caches (not source of truth)
+.claude/
+.cursor/
+
+# AI / editor agent instructions (local choice; not required to build or run CLI)
+.cursorrules
+CLAUDE.md
+.github/copilot-instructions.md
+
+# npm pack artifacts
+*.tgz
