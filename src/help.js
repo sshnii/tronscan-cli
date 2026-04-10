@@ -22,9 +22,7 @@ ${B('全局选项:')}
 
   代币:
     ts token <contract|symbol>      TRC20 代币详情（支持 USDT 等符号）
-    ts token-trc10 <id|symbol>      TRC10 代币详情
     ts token-holders <contract|symbol> TRC20 持有者列表
-    ts token-holders-trc10 <token|symbol> TRC10 持有者列表
     ts token-price <symbol>         代币价格（如 trx、usdt）
     ts token-list                   代币排行
     ts token-distribution <token>   持仓分布
@@ -48,7 +46,6 @@ ${B('全局选项:')}
     ts account-resource <addr>      Stake 2.0 资源(带宽/能量)
     ts account-resource-v1 <addr>   Stake 1.0 资源
     ts account-approve <addr>       代币授权列表
-    ts account-approve-change <addr> 授权变更历史
     ts account-votes <addr>         投票记录
     ts account-analysis <addr>      日度分析
     ts account-asset <addr>         持仓总览(含估值)

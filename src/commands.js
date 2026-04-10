@@ -18,6 +18,20 @@ async function resolveAndLog(input, resolver) {
   return result;
 }
 
+function timeRange(days = 7) {
+  const end = Date.now();
+  const start = end - days * 24 * 3600 * 1000;
+  return `start_timestamp=${start}&end_timestamp=${end}`;
+}
+
+function trim(data, limit = 20) {
+  const arr = Array.isArray(data) ? data : (data?.data || []);
+  if (!Array.isArray(arr) || arr.length <= limit) return data;
+  const sliced = arr.slice(-limit);
+  if (Array.isArray(data)) return { total: data.length, data: sliced };
+  return { ...data, _total: arr.length, _trimmed: limit, data: sliced };
+}
+
 // ============ Command Definitions ============
 
 export const commands = {
@@ -48,17 +62,13 @@ export const commands = {
     usage: 'ts account-approve <address>', desc: '代币授权列表',
     run: (a, o) => get(`/api/account/approve/list?address=${require(a, 0, 'address', 'ts account-approve <address>')}&start=${o.start}&limit=${o.limit}`)
   },
-  'account-approve-change': {
-    usage: 'ts account-approve-change <address>', desc: '授权变更历史',
-    run: (a, o) => get(`/api/account/approve/change?address=${require(a, 0, 'address', 'ts account-approve-change <address>')}&start=${o.start}&limit=${o.limit}`)
-  },
   'account-votes': {
     usage: 'ts account-votes <address>', desc: '投票记录',
     run: (a) => get(`/api/vote?voter=${require(a, 0, 'address', 'ts account-votes <address>')}`)
   },
   'account-analysis': {
-    usage: 'ts account-analysis <address>', desc: '日度分析',
-    run: (a) => get(`/api/account/analysis?address=${require(a, 0, 'address', 'ts account-analysis <address>')}`)
+    usage: 'ts account-analysis <address>', desc: '日度分析(默认近7天)',
+    run: (a) => get(`/api/account/analysis?address=${require(a, 0, 'address', 'ts account-analysis <address>')}&${timeRange()}`)
   },
   'account-asset': {
     usage: 'ts account-asset <address>', desc: '持仓总览(含估值)',
@@ -139,28 +149,12 @@ export const commands = {
       return get(`/api/token_trc20?contract=${contract}`);
     }
   },
-  'token-trc10': {
-    usage: 'ts token-trc10 <id|symbol>', desc: 'TRC10 代币详情',
-    run: async (a) => {
-      require(a, 0, 'id|symbol', 'ts token-trc10 <id|symbol>');
-      const tid = await resolveAndLog(a[0], resolveTrc10);
-      return get(`/api/token?id=${tid}`);
-    }
-  },
   'token-holders': {
     usage: 'ts token-holders <contract|symbol>', desc: 'TRC20 持有者列表',
     run: async (a, o) => {
       require(a, 0, 'contract|symbol', 'ts token-holders <contract|symbol>');
       const contract = await resolveAndLog(a[0], resolveContract);
       return get(`/api/token_trc20/holders?contract_address=${contract}&start=${o.start}&limit=${o.limit}`);
-    }
-  },
-  'token-holders-trc10': {
-    usage: 'ts token-holders-trc10 <token|symbol>', desc: 'TRC10 持有者列表',
-    run: async (a, o) => {
-      require(a, 0, 'token|symbol', 'ts token-holders-trc10 <token|symbol>');
-      const tid = await resolveAndLog(a[0], resolveTrc10);
-      return get(`/api/tokenholders?token=${tid}&start=${o.start}&limit=${o.limit}`);
     }
   },
   'token-price': {
@@ -194,8 +188,8 @@ export const commands = {
     run: (a) => get(`/api/contracts/top_call?contract_address=${require(a, 0, 'address', 'ts contract-callers <address>')}`)
   },
   'contract-energy': {
-    usage: 'ts contract-energy <address>', desc: '能量消耗统计',
-    run: (a) => get(`/api/onecontractenergystatistic?address=${require(a, 0, 'address', 'ts contract-energy <address>')}`)
+    usage: 'ts contract-energy <address>', desc: '能量消耗统计(默认近7天)',
+    run: (a) => get(`/api/onecontractenergystatistic?address=${require(a, 0, 'address', 'ts contract-energy <address>')}&${timeRange()}`)
   },
   'contract-daily-callers': {
     usage: 'ts contract-daily-callers <addr> <start_ts> <end_ts>', desc: '每日独立调用者',
@@ -231,8 +225,8 @@ export const commands = {
   // --- 超级代表 ---
 
   'sr': {
-    usage: 'ts sr [type: 0=SR, 1=partner, 3=candidate]', desc: 'SR 列表',
-    run: (a) => get(`/api/pagewitness?witnesstype=${a[0] || '0'}`)
+    usage: 'ts sr [type: 0=SR, 1=partner, 3=candidate]', desc: 'SR 列表(默认前20)',
+    run: (a, o) => get(`/api/pagewitness?witnesstype=${a[0] || '0'}&limit=${o.limit}`)
   },
   'sr-votes': {
     usage: 'ts sr-votes <address>', desc: 'SR 投票详情',
@@ -293,8 +287,8 @@ export const commands = {
     run: () => get('/api/search/hot')
   },
   'nodes': {
-    usage: 'ts nodes', desc: '全网节点信息',
-    run: () => get('/api/nodemap')
+    usage: 'ts nodes [--limit N]', desc: '全网节点信息(默认前20)',
+    run: async (a, o) => trim(await get('/api/nodemap'), parseInt(o.limit) || 20)
   },
 
   // --- 统计 ---
@@ -304,8 +298,8 @@ export const commands = {
     run: () => get('/api/funds')
   },
   'trx-turnover': {
-    usage: 'ts trx-turnover', desc: 'TRX 发行与销毁分析',
-    run: () => get('/api/turnover')
+    usage: 'ts trx-turnover', desc: 'TRX 发行与销毁分析(默认近7天)',
+    run: () => get(`/api/turnover?${timeRange()}`)
   },
   'protocol-revenue': {
     usage: 'ts protocol-revenue [timeType]', desc: 'TRON 协议总收入 (timeType: 0=天 1=月 2=季 3=年, 默认0)',
@@ -340,8 +334,8 @@ export const commands = {
     run: () => get('/api/overview/transactionnum')
   },
   'active-accounts': {
-    usage: 'ts active-accounts', desc: '活跃账户',
-    run: () => get('/api/account/active_statistic')
+    usage: 'ts active-accounts', desc: '活跃账户(默认近7天)',
+    run: () => get(`/api/account/active_statistic?${timeRange()}`)
   },
   'new-accounts': {
     usage: 'ts new-accounts', desc: '新增账户',
@@ -364,24 +358,33 @@ export const commands = {
     run: () => get('/api/energydailystatistic')
   },
   'energy-dist': {
-    usage: 'ts energy-dist', desc: '能量消耗分布',
-    run: () => get('/api/energystatistic')
+    usage: 'ts energy-dist', desc: '能量消耗分布(默认近7天)',
+    run: () => get(`/api/energystatistic?${timeRange()}`)
   },
   'energy-cost': {
     usage: 'ts energy-cost', desc: '能量/带宽获取成本',
     run: () => get('/api/acquisition_cost_statistic')
   },
   'bandwidth-daily': {
-    usage: 'ts bandwidth-daily', desc: '每日带宽消耗',
-    run: () => get('/api/netstatistic')
+    usage: 'ts bandwidth-daily', desc: '每日带宽消耗(默认近7天)',
+    run: () => get(`/api/netstatistic?${timeRange()}`)
   },
   'trigger-stats': {
     usage: 'ts trigger-stats', desc: '合约调用分布',
     run: () => get('/api/triggeramountstatistic')
   },
   'token-tvc': {
-    usage: 'ts token-tvc', desc: '代币链上价值(TVC)',
-    run: () => get('/api/tokenTvc')
+    usage: 'ts token-tvc [--limit N]', desc: '代币链上价值(TVC)(默认前10)',
+    run: async (a, o) => {
+      const r = await get('/api/tokenTvc');
+      const limit = parseInt(o.limit) || 10;
+      return {
+        totalTvc: r.totalTvc,
+        totalTokenNum: r.totalTokenNum,
+        updateTime: r.updateTime,
+        tokens: (r.tokens || []).slice(0, limit),
+      };
+    }
   },
   'token-analysis': {
     usage: 'ts token-analysis <contract|symbol>', desc: '代币交易分析',
@@ -392,8 +395,8 @@ export const commands = {
     }
   },
   'token-transfer-analysis': {
-    usage: 'ts token-transfer-analysis', desc: '代币转账分析',
-    run: () => get('/api/tokenTransfer/analysis')
+    usage: 'ts token-transfer-analysis [--limit N]', desc: '代币转账分析(默认近30条)',
+    run: async (a, o) => trim(await get('/api/tokenTransfer/analysis'), parseInt(o.limit) || 30)
   },
 
   // --- 深度分析 ---
@@ -446,8 +449,8 @@ export const commands = {
     run: (a) => get(`/api/stableCoin/distribution?token=${require(a, 0, 'contract', 'ts stable-dist <contract>  (如 USDT: TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t)')}`)
   },
   'stable-liquidity': {
-    usage: 'ts stable-liquidity', desc: '流动性操作记录',
-    run: () => get('/api/deep/stableCoin/liquidity/transaction')
+    usage: 'ts stable-liquidity [--limit N]', desc: '流动性操作记录(默认近20条)',
+    run: async (a, o) => trim(await get('/api/deep/stableCoin/liquidity/transaction'), parseInt(o.limit) || 20)
   },
   'stable-pool': {
     usage: 'ts stable-pool <pool_address>', desc: '池子概览(TVL)',
@@ -458,8 +461,8 @@ export const commands = {
     run: (a) => get(`/api/stableCoin/pool/trend?pool=${require(a, 0, 'pool_address', 'ts stable-pool-trend <pool_address>')}`)
   },
   'stable-pool-change': {
-    usage: 'ts stable-pool-change <pool_address>', desc: '池子历史变化',
-    run: (a) => get(`/api/stableCoin/pool/change?pool=${require(a, 0, 'pool_address', 'ts stable-pool-change <pool_address>')}`)
+    usage: 'ts stable-pool-change <pool_address> [--limit N]', desc: '池子历史变化(默认近30条)',
+    run: async (a, o) => trim(await get(`/api/stableCoin/pool/change?pool=${require(a, 0, 'pool_address', 'ts stable-pool-change <pool_address>')}`), parseInt(o.limit) || 30)
   },
   'stable-tvl': {
     usage: 'ts stable-tvl', desc: '稳定币 TVL 分布',
