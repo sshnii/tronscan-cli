@@ -55,7 +55,7 @@ ${B('全局选项:')}
     ts sr [type]                    SR 列表 (0=SR,1=partner,3=candidate)
     ts sr-votes <addr>              SR 投票详情
     ts params                       链参数
-    ts proposal <id>                提案详情
+    ts proposal [id]                提案列表(传ID查详情)
 
   交易:
     ts tx <hash>                    交易详情

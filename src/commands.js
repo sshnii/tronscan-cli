@@ -262,21 +262,24 @@ export const commands = {
     run: () => get('/api/chainparameters')
   },
   'proposal': {
-    usage: 'ts proposal <id>', desc: '提案详情',
-    run: async (a) => {
-      const r = await get(`/api/proposal?id=${require(a, 0, 'id', 'ts proposal <id>')}`);
-      const trimApproval = (list) => (list || []).slice(0, 10).map(({ address, name, votes }) =>
-        ({ address, name, votes }));
-      if (r.approvals) r.approvals = trimApproval(r.approvals);
-      if (r.activeApprovals) r.activeApprovals = trimApproval(r.activeApprovals);
-      if (r.veto) r.veto = trimApproval(r.veto);
-      if (r.typeApprovals) {
-        for (const k of Object.keys(r.typeApprovals)) {
-          r.typeApprovals[k] = trimApproval(r.typeApprovals[k]);
+    usage: 'ts proposal [id] [--start N] [--limit N]', desc: '提案列表(传ID查详情)',
+    run: async (a, o) => {
+      if (a[0]) {
+        const r = await get(`/api/proposal?id=${a[0]}`);
+        const trimApproval = (list) => (list || []).slice(0, 10).map(({ address, name, votes }) =>
+          ({ address, name, votes }));
+        if (r.approvals) r.approvals = trimApproval(r.approvals);
+        if (r.activeApprovals) r.activeApprovals = trimApproval(r.activeApprovals);
+        if (r.veto) r.veto = trimApproval(r.veto);
+        if (r.typeApprovals) {
+          for (const k of Object.keys(r.typeApprovals)) {
+            r.typeApprovals[k] = trimApproval(r.typeApprovals[k]);
+          }
         }
+        delete r.lastProposerInfos;
+        return r;
       }
-      delete r.lastProposerInfos;
-      return r;
+      return get(`/api/proposal?sort=-number&start=${o.start}&limit=${o.limit}`);
     }
   },
 
