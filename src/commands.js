@@ -24,6 +24,13 @@ function timeRange(days = 7) {
   return `start_timestamp=${start}&end_timestamp=${end}`;
 }
 
+function revenueRange(timeType) {
+  const end = Date.now();
+  const days = { '0': 30, '1': 365 * 3, '2': 365 * 5, '3': 365 * 10 };
+  const start = end - (days[timeType] || 30) * 24 * 3600 * 1000;
+  return { start, end };
+}
+
 function trim(data, limit = 20) {
   const arr = Array.isArray(data) ? data : (data?.data || []);
   if (!Array.isArray(arr) || arr.length <= limit) return data;
@@ -40,7 +47,13 @@ export const commands = {
 
   'account': {
     usage: 'ts account <address>', desc: '账户详情',
-    run: (a) => get(`/api/accountv2?address=${require(a, 0, 'address', 'ts account <address>') }`)
+    run: async (a) => {
+      const r = await get(`/api/accountv2?address=${require(a, 0, 'address', 'ts account <address>')}`);
+      if (r.bandwidth?.assets) delete r.bandwidth.assets;
+      if (r.tokenBalances) r.tokenBalances = r.tokenBalances.slice(0, 10);
+      if (r.trc20token_balances) r.trc20token_balances = r.trc20token_balances.slice(0, 10);
+      return r;
+    }
   },
   'account-list': {
     usage: 'ts account-list [--start N] [--limit N]', desc: '账户排行榜',
@@ -210,8 +223,11 @@ export const commands = {
     }
   },
   'contract-analysis': {
-    usage: 'ts contract-analysis <address> [type:0-5]', desc: '合约日度分析',
-    run: (a) => get(`/api/contract/analysis?address=${require(a, 0, 'address', 'ts contract-analysis <address> [type:0-5]')}&type=${a[1] || '0'}`)
+    usage: 'ts contract-analysis <address> [type:0-5]', desc: '合约日度分析(默认近30条)',
+    run: async (a) => {
+      const r = await get(`/api/contract/analysis?address=${require(a, 0, 'address', 'ts contract-analysis <address> [type:0-5]')}&type=${a[1] || '0'}`);
+      return trim(r, 30);
+    }
   },
   'contract-all-callers': {
     usage: 'ts contract-all-callers <address> [day]', desc: '所有调用者列表',
@@ -226,7 +242,16 @@ export const commands = {
 
   'sr': {
     usage: 'ts sr [type: 0=SR, 1=partner, 3=candidate]', desc: 'SR 列表(默认前20)',
-    run: (a, o) => get(`/api/pagewitness?witnesstype=${a[0] || '0'}&limit=${o.limit}`)
+    run: async (a, o) => {
+      const r = await get(`/api/pagewitness?witnesstype=${a[0] || '0'}&limit=${o.limit}`);
+      if (r.data) {
+        r.data = r.data.map(({ address, name, url, realTimeVotes, changeVotes, producePercentage,
+          annualizedRate, lastWithDrawAmount, brokerage }) =>
+          ({ address, name, url, realTimeVotes, changeVotes, producePercentage,
+            annualizedRate, lastWithDrawAmount, brokerage }));
+      }
+      return r;
+    }
   },
   'sr-votes': {
     usage: 'ts sr-votes <address>', desc: 'SR 投票详情',
@@ -238,7 +263,21 @@ export const commands = {
   },
   'proposal': {
     usage: 'ts proposal <id>', desc: '提案详情',
-    run: (a) => get(`/api/proposal?id=${require(a, 0, 'id', 'ts proposal <id>')}`)
+    run: async (a) => {
+      const r = await get(`/api/proposal?id=${require(a, 0, 'id', 'ts proposal <id>')}`);
+      const trimApproval = (list) => (list || []).slice(0, 10).map(({ address, name, votes }) =>
+        ({ address, name, votes }));
+      if (r.approvals) r.approvals = trimApproval(r.approvals);
+      if (r.activeApprovals) r.activeApprovals = trimApproval(r.activeApprovals);
+      if (r.veto) r.veto = trimApproval(r.veto);
+      if (r.typeApprovals) {
+        for (const k of Object.keys(r.typeApprovals)) {
+          r.typeApprovals[k] = trimApproval(r.typeApprovals[k]);
+        }
+      }
+      delete r.lastProposerInfos;
+      return r;
+    }
   },
 
   // --- 安全 ---
@@ -272,7 +311,18 @@ export const commands = {
 
   'search': {
     usage: 'ts search <keyword>', desc: '搜索',
-    run: (a, o) => get(`/api/search/v2?term=${require(a, 0, 'keyword', 'ts search <keyword>')}&start=0&limit=${o.limit || '10'}`)
+    run: async (a, o) => {
+      const limit = parseInt(o.limit) || 10;
+      const r = await get(`/api/search/v2?term=${require(a, 0, 'keyword', 'ts search <keyword>')}&start=0&limit=${limit}`);
+      const trimArr = (arr, n) => (arr || []).slice(0, n).map(({ abbr, name, token_id, token_type, vip, price }) =>
+        ({ abbr, name, token_id, token_type, vip, price }));
+      return {
+        token: trimArr(r.token, limit),
+        contract: (r.contract || []).slice(0, limit).map(({ address, name, tag, verified }) =>
+          ({ address, name, tag, verified })),
+        account: r.account,
+      };
+    }
   },
   'tps': {
     usage: 'ts tps', desc: '当前 TPS',
@@ -280,7 +330,20 @@ export const commands = {
   },
   'overview': {
     usage: 'ts overview', desc: 'TRON 网络概览',
-    run: () => get('/api/system/homepage-bundle')
+    run: async () => {
+      const r = await get('/api/system/homepage-bundle');
+      const { statsOverview, freezeResource, stableCoin, ...rest } = r;
+      const result = { ...rest };
+      if (statsOverview) {
+        const { data, ...summary } = statsOverview;
+        result.statsOverview = summary;
+      }
+      if (freezeResource) {
+        const { data, ...summary } = freezeResource;
+        result.freezeResource = summary;
+      }
+      return result;
+    }
   },
   'hot-token': {
     usage: 'ts hot-token', desc: '热搜代币排行',
@@ -303,26 +366,37 @@ export const commands = {
   },
   'protocol-revenue': {
     usage: 'ts protocol-revenue [timeType]', desc: 'TRON 协议总收入 (timeType: 0=天 1=月 2=季 3=年, 默认0)',
-    run: (a, o) => {
-      const end = Date.now();
-      const start = end - 365 * 24 * 3600 * 1000; // 近一年
-      return get(`/api/external/turnover/new?size=${o.limit || '1000'}&start=${start}&end=${end}&timeType=${a[0] || '0'}`);
+    run: async (a, o) => {
+      const t = a[0] || '0';
+      const limit = parseInt(o.limit) || 30;
+      const { start, end } = revenueRange(t);
+      const r = await get(`/api/external/turnover/new?size=1000&start=${start}&end=${end}&timeType=${t}`);
+      const trimmed = trim(r, limit);
+      if (trimmed.data) {
+        trimmed.data = trimmed.data.map(({ day, totalIncome, burnIncome, stakeIncome, energyIncome, netIncome, trxClosePrice }) =>
+          ({ day, totalIncome, burnIncome, stakeIncome, energyIncome, netIncome, trxClosePrice }));
+      }
+      return trimmed;
     }
   },
   'burn-revenue': {
     usage: 'ts burn-revenue [timeType]', desc: 'TRON 销毁收入 (timeType: 0=天 1=月 2=季 3=年, 默认0)',
-    run: (a, o) => {
-      const end = Date.now();
-      const start = end - 365 * 24 * 3600 * 1000;
-      return get(`/api/external/consumption/statistic?size=${o.limit || '1000'}&start=${start}&end=${end}&timeType=${a[0] || '0'}&type=burn`);
+    run: async (a, o) => {
+      const t = a[0] || '0';
+      const limit = parseInt(o.limit) || 30;
+      const { start, end } = revenueRange(t);
+      const r = await get(`/api/external/consumption/statistic?size=1000&start=${start}&end=${end}&timeType=${t}&type=burn`);
+      return trim(r, limit);
     }
   },
   'stake-revenue': {
     usage: 'ts stake-revenue [timeType]', desc: 'TRON 质押收入 (timeType: 0=天 1=月 2=季 3=年, 默认0)',
-    run: (a, o) => {
-      const end = Date.now();
-      const start = end - 365 * 24 * 3600 * 1000;
-      return get(`/api/external/consumption/statistic?size=${o.limit || '1000'}&start=${start}&end=${end}&timeType=${a[0] || '0'}&type=stake`);
+    run: async (a, o) => {
+      const t = a[0] || '0';
+      const limit = parseInt(o.limit) || 30;
+      const { start, end } = revenueRange(t);
+      const r = await get(`/api/external/consumption/statistic?size=1000&start=${start}&end=${end}&timeType=${t}&type=stake`);
+      return trim(r, limit);
     }
   },
   'tx-trend': {
@@ -382,7 +456,10 @@ export const commands = {
         totalTvc: r.totalTvc,
         totalTokenNum: r.totalTokenNum,
         updateTime: r.updateTime,
-        tokens: (r.tokens || []).slice(0, limit),
+        tokens: (r.tokens || []).slice(0, limit).map(({ abbr, name, contractAddress, priceInUsd, marketCapUSD,
+          volume24hInUsd, nrOfTokenHolders, transferCount, gain }) =>
+          ({ abbr, name, contractAddress, priceInUsd, marketCapUSD,
+            volume24hInUsd, nrOfTokenHolders, transferCount, gain })),
       };
     }
   },
@@ -429,8 +506,12 @@ export const commands = {
     run: () => get('/api/stableCoin/holder/balance/overview')
   },
   'stable-change': {
-    usage: 'ts stable-change', desc: '持有者变化趋势',
-    run: () => get('/api/stableCoin/holder/change')
+    usage: 'ts stable-change', desc: '持有者变化趋势(默认近10条)',
+    run: async () => {
+      const r = await get('/api/stableCoin/holder/change');
+      if (r.statistics) r.statistics = r.statistics.slice(-10);
+      return r;
+    }
   },
   'stable-top': {
     usage: 'ts stable-top', desc: '大户排行',
@@ -438,7 +519,11 @@ export const commands = {
   },
   'stable-big-tx': {
     usage: 'ts stable-big-tx [types]', desc: '大额交易 (types: 1=USDT 2=USDJ 3=TUSD 4=USDC)',
-    run: (a, o) => get(`/api/deep/stableCoin/bigAmount?types=${a[0] || '1'}&start=${o.start}&limit=${o.limit}`)
+    run: async (a, o) => {
+      const r = await get(`/api/deep/stableCoin/bigAmount?types=${a[0] || '1'}&start=${o.start}&limit=${o.limit}`);
+      if (r.contractMap) delete r.contractMap;
+      return r;
+    }
   },
   'stable-events': {
     usage: 'ts stable-events [--sort 0|1] [--start N] [--limit N]', desc: '增发/销毁/黑名单事件 (sort: 0=asc 1=desc)',
@@ -465,8 +550,14 @@ export const commands = {
     run: async (a, o) => trim(await get(`/api/stableCoin/pool/change?pool=${require(a, 0, 'pool_address', 'ts stable-pool-change <pool_address>')}`), parseInt(o.limit) || 30)
   },
   'stable-tvl': {
-    usage: 'ts stable-tvl', desc: '稳定币 TVL 分布',
-    run: () => get('/api/stableCoin/tvl')
+    usage: 'ts stable-tvl', desc: '稳定币 TVL 分布(默认近10条)',
+    run: async () => {
+      const r = await get('/api/stableCoin/tvl');
+      for (const key of Object.keys(r)) {
+        if (Array.isArray(r[key])) r[key] = r[key].slice(-10);
+      }
+      return r;
+    }
   },
 
   // --- 兜底 ---

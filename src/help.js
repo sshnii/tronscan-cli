@@ -73,8 +73,8 @@ ${B('全局选项:')}
     ts trx-supply                   TRX 供应/销毁
     ts trx-turnover                 TRX 发行与销毁分析
     ts protocol-revenue [timeType]  TRON 协议总收入 (0=天 1=月 2=季 3=年)
-    ts burn-revenue [timeType]      TRON 销毁收入明细
-    ts stake-revenue [timeType]     TRON 质押收入明细
+    ts burn-revenue [timeType]      TRON 销毁收入明细 (0=天 1=月 2=季 3=年)
+    ts stake-revenue [timeType]     TRON 质押收入明细 (0=天 1=月 2=季 3=年)
     ts tx-trend                     每日交易趋势
     ts tx-total                     累计交易数
     ts active-accounts              活跃账户

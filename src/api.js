@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 export const PROJECT_ROOT = resolve(__dirname, '..');
 
-export const VERSION = '1.0.5';
+export const VERSION = '1.0.7';
 const BASE_URL = 'https://apilist.tronscanapi.com';
 
 let apiKey = process.env.TRONSCAN_API_KEY || '';
