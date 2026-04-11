@@ -266,7 +266,7 @@ export const commands = {
     run: async (a, o) => {
       if (a[0]) {
         const r = await get(`/api/proposal?id=${a[0]}`);
-        const trimApproval = (list) => (list || []).slice(0, 10).map(({ address, name, votes }) =>
+        const trimApproval = (list) => (list || []).map(({ address, name, votes }) =>
           ({ address, name, votes }));
         if (r.approvals) r.approvals = trimApproval(r.approvals);
         if (r.activeApprovals) r.activeApprovals = trimApproval(r.activeApprovals);
