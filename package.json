@@ -1,6 +1,6 @@
 {
   "name": "@tronscanteam/cli",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "TronScan API CLI tool - 80+ commands for TRON blockchain data",
   "type": "module",
   "repository": {
