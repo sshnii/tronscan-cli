@@ -375,9 +375,10 @@ export const commands = {
       const { start, end } = revenueRange(t);
       const r = await get(`/api/external/turnover/new?size=1000&start=${start}&end=${end}&timeType=${t}`);
       const trimmed = trim(r, limit);
+      const round = v => typeof v === 'number' ? Math.round(v) : v;
       if (trimmed.data) {
         trimmed.data = trimmed.data.map(({ day, totalIncome, burnIncome, stakeIncome, energyIncome, netIncome, trxClosePrice }) =>
-          ({ day, totalIncome, burnIncome, stakeIncome, energyIncome, netIncome, trxClosePrice }));
+          ({ day, totalIncome: round(totalIncome), burnIncome: round(burnIncome), stakeIncome: round(stakeIncome), energyIncome: round(energyIncome), netIncome: round(netIncome), trxClosePrice }));
       }
       trimmed._unit = 'USD';
       trimmed._fields = { netIncome: '带宽收入(bandwidth revenue)', energyIncome: '能量收入(energy revenue)' };
@@ -392,6 +393,7 @@ export const commands = {
       const { start, end } = revenueRange(t);
       const r = await get(`/api/external/consumption/statistic?size=1000&start=${start}&end=${end}&timeType=${t}&type=burn`);
       const trimmed = trim(r, limit);
+      if (trimmed.data) trimmed.data = trimmed.data.map(d => { for (const k in d) if (typeof d[k] === 'number' && k !== 'trxPriceInUsd') d[k] = Math.round(d[k]); return d; });
       trimmed._unit = 'USD';
       trimmed._fields = { netBurnIncome: '带宽销毁收入(bandwidth burn revenue)', energyBurnIncome: '能量销毁收入(energy burn revenue)', netIncome: '带宽收入(bandwidth revenue)', energyIncome: '能量收入(energy revenue)' };
       return trimmed;
@@ -405,6 +407,7 @@ export const commands = {
       const { start, end } = revenueRange(t);
       const r = await get(`/api/external/consumption/statistic?size=1000&start=${start}&end=${end}&timeType=${t}&type=stake`);
       const trimmed = trim(r, limit);
+      if (trimmed.data) trimmed.data = trimmed.data.map(d => { for (const k in d) if (typeof d[k] === 'number' && k !== 'trxPriceInUsd') d[k] = Math.round(d[k]); return d; });
       trimmed._unit = 'USD';
       trimmed._fields = { netStakeIncome: '带宽质押收入(bandwidth stake revenue)', energyStakeIncome: '能量质押收入(energy stake revenue)', netIncome: '带宽收入(bandwidth revenue)', energyIncome: '能量收入(energy revenue)' };
       return trimmed;
