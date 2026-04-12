@@ -379,6 +379,7 @@ export const commands = {
         trimmed.data = trimmed.data.map(({ day, totalIncome, burnIncome, stakeIncome, energyIncome, netIncome, trxClosePrice }) =>
           ({ day, totalIncome, burnIncome, stakeIncome, energyIncome, netIncome, trxClosePrice }));
       }
+      trimmed._unit = 'USD';
       return trimmed;
     }
   },
@@ -389,7 +390,9 @@ export const commands = {
       const limit = parseInt(o.limit) || 30;
       const { start, end } = revenueRange(t);
       const r = await get(`/api/external/consumption/statistic?size=1000&start=${start}&end=${end}&timeType=${t}&type=burn`);
-      return trim(r, limit);
+      const trimmed = trim(r, limit);
+      trimmed._unit = 'USD';
+      return trimmed;
     }
   },
   'stake-revenue': {
@@ -399,7 +402,9 @@ export const commands = {
       const limit = parseInt(o.limit) || 30;
       const { start, end } = revenueRange(t);
       const r = await get(`/api/external/consumption/statistic?size=1000&start=${start}&end=${end}&timeType=${t}&type=stake`);
-      return trim(r, limit);
+      const trimmed = trim(r, limit);
+      trimmed._unit = 'USD';
+      return trimmed;
     }
   },
   'tx-trend': {
