@@ -393,6 +393,7 @@ export const commands = {
       const r = await get(`/api/external/consumption/statistic?size=1000&start=${start}&end=${end}&timeType=${t}&type=burn`);
       const trimmed = trim(r, limit);
       trimmed._unit = 'USD';
+      trimmed._fields = { netBurnIncome: '带宽销毁收入(bandwidth burn revenue)', energyBurnIncome: '能量销毁收入(energy burn revenue)', netIncome: '带宽收入(bandwidth revenue)', energyIncome: '能量收入(energy revenue)' };
       return trimmed;
     }
   },
@@ -405,6 +406,7 @@ export const commands = {
       const r = await get(`/api/external/consumption/statistic?size=1000&start=${start}&end=${end}&timeType=${t}&type=stake`);
       const trimmed = trim(r, limit);
       trimmed._unit = 'USD';
+      trimmed._fields = { netStakeIncome: '带宽质押收入(bandwidth stake revenue)', energyStakeIncome: '能量质押收入(energy stake revenue)', netIncome: '带宽收入(bandwidth revenue)', energyIncome: '能量收入(energy revenue)' };
       return trimmed;
     }
   },
