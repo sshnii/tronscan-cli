@@ -380,6 +380,7 @@ export const commands = {
           ({ day, totalIncome, burnIncome, stakeIncome, energyIncome, netIncome, trxClosePrice }));
       }
       trimmed._unit = 'USD';
+      trimmed._fields = { netIncome: '带宽收入(bandwidth revenue)', energyIncome: '能量收入(energy revenue)' };
       return trimmed;
     }
   },
