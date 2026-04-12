@@ -321,9 +321,10 @@ export const commands = {
         ({ abbr, name, token_id, token_type, vip, price }));
       return {
         token: trimArr(r.token, limit),
-        contract: (r.contract || []).slice(0, limit).map(({ address, name, tag, verified }) =>
-          ({ address, name, tag, verified })),
-        account: r.account,
+        contract: (r.contract || []).slice(0, limit).map(({ contract_address, name, tag, verify_status }) =>
+          ({ contract_address, name, tag, verify_status })),
+        address: (r.address || []).slice(0, limit).map(({ address, name, address_tag, balance, total_transactions }) =>
+          ({ address, name, address_tag, balance, total_transactions })),
       };
     }
   },
