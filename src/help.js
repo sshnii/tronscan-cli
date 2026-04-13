@@ -75,14 +75,14 @@ ${B('全局选项:')}
     ts protocol-revenue [timeType]  TRON 协议总收入 (0=天 1=月 2=季 3=年)
     ts burn-revenue [timeType]      TRON 销毁收入明细 (0=天 1=月 2=季 3=年)
     ts stake-revenue [timeType]     TRON 质押收入明细 (0=天 1=月 2=季 3=年)
-    ts tx-trend                     每日交易趋势
+    ts tx-trend                     每日交易趋势(默认近7天)
     ts tx-total                     累计交易数
     ts active-accounts              活跃账户
-    ts new-accounts                 新增账户
+    ts new-accounts                 新增账户(默认近7天)
     ts defi-tvl                     DeFi TVL
     ts top10                        Top 10 排行
-    ts trx-price                    TRX 价格历史
-    ts energy-daily                 每日能量消耗
+    ts trx-price                    TRX 价格历史(默认近7天)
+    ts energy-daily                 每日能量消耗(默认近7天)
     ts energy-dist                  能量消耗分布
     ts energy-cost                  能量/带宽获取成本
     ts bandwidth-daily              每日带宽消耗

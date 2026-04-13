@@ -415,8 +415,8 @@ export const commands = {
     }
   },
   'tx-trend': {
-    usage: 'ts tx-trend', desc: '每日交易趋势',
-    run: () => get('/api/overview/dailytransactionnum')
+    usage: 'ts tx-trend', desc: '每日交易趋势(默认近7天)',
+    run: () => get(`/api/overview/dailytransactionnum?${timeRange()}`)
   },
   'tx-total': {
     usage: 'ts tx-total', desc: '累计交易数',
@@ -427,8 +427,8 @@ export const commands = {
     run: () => get(`/api/account/active_statistic?${timeRange()}`)
   },
   'new-accounts': {
-    usage: 'ts new-accounts', desc: '新增账户',
-    run: () => get('/api/overview/dailyaccounts')
+    usage: 'ts new-accounts', desc: '新增账户(默认近7天)',
+    run: () => get(`/api/overview/dailyaccounts?${timeRange()}`)
   },
   'defi-tvl': {
     usage: 'ts defi-tvl', desc: 'DeFi TVL',
@@ -439,12 +439,12 @@ export const commands = {
     run: () => get('/api/top10')
   },
   'trx-price': {
-    usage: 'ts trx-price', desc: 'TRX 价格历史',
-    run: () => get('/api/trx/volume')
+    usage: 'ts trx-price', desc: 'TRX 价格历史(默认近7天)',
+    run: () => get(`/api/trx/volume?${timeRange()}`)
   },
   'energy-daily': {
-    usage: 'ts energy-daily', desc: '每日能量消耗',
-    run: () => get('/api/energydailystatistic')
+    usage: 'ts energy-daily', desc: '每日能量消耗(默认近7天)',
+    run: () => get(`/api/energydailystatistic?${timeRange()}`)
   },
   'energy-dist': {
     usage: 'ts energy-dist', desc: '能量消耗分布(默认近7天)',
